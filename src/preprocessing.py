@@ -3,8 +3,8 @@
 # ROLE: Load, explore, and clean the prompt dataset.
 #       Outputs cleaned_data.json and metadata_normalised.json.
 # OUTPUT FILES:
-#   - cleaned_data.json used by Person 2 (embeddings.py)
-#   - metadata_normalised.json used by Person 3 (metadata_fusion.py)
+#   - cleaned_data.json used in embedding file (embeddings.py)
+#   - metadata_normalised.json used in metadata file (metadata_fusion.py)
 #   - scaler.pkl saved for future use on new data
 # ============================================================
 
@@ -65,49 +65,21 @@ PLACEHOLDER_PATTERN = re.compile(r"\{\{.*?\}\}|\{\{\w+")
 # moving to EDA and preprocessing.
 # ==================================================================
 
+# ==================================================================
+# SECTION 2 — LOAD DATA
+#
+# Load the raw JSON dataset into a pandas DataFrame.
+# ==================================================================
+
 def load_data(path: str) -> pd.DataFrame:
     """
-    Load the LEAF PromptKaban dataset from a JSON file
-
-    The expected input is a list of prompt records, where each record
-    contains the fields described in the project guide. The function
-    converts the JSON data into a pandas DataFrame and checks that the
-    main expected columns are present.
-
+    Load the LEAF PromptKaban dataset from a JSON file and return
+    it as a pandas DataFrame.
     """
-
-    if not os.path.exists(path):
-        raise FileNotFoundError(
-            f"Dataset not found at '{path}'. "
-            "Make sure dataset.json is in the same folder as this script."
-        )
-
     with open(path, "r", encoding="utf-8") as f:
         raw = json.load(f)
 
     df = pd.DataFrame(raw)
-
-    expected_rows = 20_000
-    if df.shape[0] != expected_rows:
-        raise ValueError(
-            f"Expected {expected_rows:,} rowsm but loaded {df.shape[0]:,}"
-            "Please check that the correct dataset file is being used"
-        )
-
-
-    expected_columns = {
-        "id", "title", "content", "category", "subcategory", "tags",
-        "likes", "upvotes", "downvotes", "views", "uses",
-        "author_reputation", "difficulty", "created_at",
-        "version", "fork_count", "has_placeholders", "placeholders",
-        "language", "target_model",
-    }
-    missing_columns = expected_columns - set(df.columns)
-    if missing_columns:
-        raise ValueError(
-            f"The dataset is missing the following expected columns: "
-            f"{sorted(missing_columns)}"
-        )
 
     print(f"  Loaded {df.shape[0]:,} rows × {df.shape[1]} columns")
     print(f"  Columns: {df.columns.tolist()}")
@@ -154,6 +126,7 @@ def run_eda(df: pd.DataFrame) -> None:
 
     print("\n CATEGORY DISTRIBUTION")
     print(df["category"].value_counts().to_string())
+    print(f"  Unique categories: {df['category'].nunique()}")
 
     print("\n CONTENT LENGTH (characters)")
     content_lengths = df["content"].str.len()
@@ -287,13 +260,9 @@ def build_text_to_embed(row: pd.Series) -> str:
     prompt body, then tags as topic keywords. A period separates the
     title from the content so the model treats them as distinct phrases.
     """
-    title = str(row.get("title", "") or "")
-    content = str(row.get("content", "") or "")
-
-    tags = row.get("tags", [])
-    if not isinstance(tags, list):
-        tags = []
-    tags_str = " ".join(tags)
+    title = str(row["title"])
+    content = str(row["content"])
+    tags_str = " ".join(row["tags"])
 
     return f"{title}. {content} {tags_str}".strip()
 
@@ -334,9 +303,7 @@ def normalise_metadata(df: pd.DataFrame) -> tuple[pd.DataFrame, MinMaxScaler]:
 # ==================================================================
 # SECTION 8 — SAVE OUTPUTS
 #
-# Writes the three output files that downstream team members depend on.
-# Filenames are defined in Section 1, coordinate with the team before
-# changing them, as Person 2 and Person 3 hardcode these paths.
+# Writes the three output files.
 # ==================================================================
 
 def save_outputs(
@@ -347,18 +314,18 @@ def save_outputs(
     """
     Save the preprocessing outputs.
 
-    cleaned_data.json is used by Person 2 for the embedding phase.
-    metadata_normalised.json is used by Person 3 for metadata fusion.
+    cleaned_data.json is used for the embedding phase.
+    metadata_normalised.json is used the for metadata fusion.
     scaler.pkl stores the fitted MinMaxScaler for future transformations.
     """
 
-    # OUTPUT 1: cleaned dataset for Person 2
+    # OUTPUT 1: cleaned dataset
     records = df_cleaned.to_dict(orient="records")
     with open(CLEANED_OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
     print(f"  Saved {len(records):,} records -> {CLEANED_OUTPUT_PATH}")
 
-    # OUTPUT 2: normalised metadata for Person 3
+    # OUTPUT 2: normalised metadata
     meta_records = df_meta.to_dict(orient="records")
     with open(METADATA_OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(meta_records, f, ensure_ascii=False, indent=2)
@@ -398,6 +365,8 @@ def main():
     # STEP 4: Handle placeholders in the content field
     print("\n[4/6] Handling placeholders in content")
     df["content"] = df["content"].apply(handle_placeholders)
+    replaced = df["has_placeholders"].sum()
+    print(f"  Replaced {{{{...}}}} tokens with [VALUE] in {replaced:,} prompts ({replaced / len(df) * 100:.1f}%)")
 
     # STEP 5: Build the text_to_embed field
     print("\n[5/6] Building text_to_embed field")
@@ -412,8 +381,8 @@ def main():
     save_outputs(df, df_meta, scaler)
 
     print("\n✓ Preprocessing complete.")
-    print(f"  -> {CLEANED_OUTPUT_PATH}  (send to Person 2)")
-    print(f"  -> {METADATA_OUTPUT_PATH} (send to Person 3)")
+    print(f"  -> {CLEANED_OUTPUT_PATH}  (For emebeddings)")
+    print(f"  -> {METADATA_OUTPUT_PATH} (For metadata fusion)")
     print(f"  -> {SCALER_OUTPUT_PATH}")
 
 

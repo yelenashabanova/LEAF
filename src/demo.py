@@ -28,7 +28,7 @@ with st.spinner("Loading models…"):
 st.title("🔍 PromptKaban Search")
 st.caption("LEAF srl · LUISS University · AI Techniques 2026 — 18,709 AI prompts")
 
-query = st.text_input("Search query", placeholder="e.g. write a cold email to a potential investor")
+query = st.text_input("Enter a search query, then press Search", placeholder="e.g. write a cold email to a potential investor")
 k     = st.slider("Results", 1, 20, 5)
 
 if st.button("Search →", type="primary") and query.strip():

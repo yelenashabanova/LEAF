@@ -77,9 +77,9 @@ def save_plot(projected, sample_cats, cat_to_color, title, xlabel, ylabel, path)
         ax.scatter(
             projected[mask, 0], projected[mask, 1],
             c=[color] * len(mask),
-            s=10,          # small dots — 3000 points overlap a lot
-            alpha=0.65,    # some transparency so dense areas don't go solid
-            linewidths=0,  # no white border around dots, looks cleaner at this density
+            s=10,
+            alpha=0.65,
+            linewidths=0,
             label=cat,
         )
 
@@ -110,7 +110,7 @@ def main():
               xlabel="UMAP 1", ylabel="UMAP 2",
               path=f"{IMAGES_DIR}/umap_by_category.png")
 
-    # t-SNE — PCA to 50 dims first, same trick from the dimensionality reduction notebook
+    # t-SNE — PCA to 50 dims first
     pca   = PCA(n_components=50, random_state=SEED)
     X_pca = pca.fit_transform(X)
 

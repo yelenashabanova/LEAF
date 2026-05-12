@@ -1,3 +1,15 @@
+# LEAF generated outputs (large files — regenerate by running the pipeline)
+src/chroma_db/
+src/outputs/embeddings.npy
+src/outputs/embeddings_bge.npy
+src/outputs/embeddings_ids.json
+src/outputs/embeddings_meta.json
+src/outputs/metadata_normalised.json
+src/outputs/best_weights.json
+src/outputs/cleaned_data.json
+src/outputs/scaler.pkl
+src/outputs/eval_queries.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

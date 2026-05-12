@@ -8,13 +8,8 @@
 #   - scaler.pkl saved for future use on new data
 # ============================================================
 
-# ------------------------------------------------------------------
-# IMPORTS
-# Standard library
-# pandas, sklearn, joblib need to be in requirements.txt.
-# ------------------------------------------------------------------
+
 import json
-import os
 import random
 import re
 import joblib
@@ -30,8 +25,6 @@ np.random.seed(42)
 # SECTION 1 — CONFIGURATION
 #
 # Central configuration for file paths and preprocessing constants.
-# Keeping these values here makes it easier to update the project
-# structure without changing the rest of the script.
 # ==================================================================
 
 #Input dataset provided
@@ -60,14 +53,6 @@ PLACEHOLDER_PATTERN = re.compile(r"\{\{.*?\}\}|\{\{\w+")
 
 # ==================================================================
 # SECTION 2 — LOAD DATA
-#
-# Load the raw JSON dataset and run basic structural checks before
-# moving to EDA and preprocessing.
-# ==================================================================
-
-# ==================================================================
-# SECTION 2 — LOAD DATA
-#
 # Load the raw JSON dataset into a pandas DataFrame.
 # ==================================================================
 
@@ -89,9 +74,7 @@ def load_data(path: str) -> pd.DataFrame:
 
 # ==================================================================
 # SECTION 3 — EXPLORATORY DATA ANALYSIS (EDA)
-
-# Inspect the raw dataset before applying any cleaning or feature
-# construction. This step does not modify the DataFrame.
+# Inspect the raw dataset before applying any modifications.
 # ==================================================================
 
 def run_eda(df: pd.DataFrame) -> None:
@@ -157,10 +140,7 @@ def run_eda(df: pd.DataFrame) -> None:
 
 # ==================================================================
 # SECTION 4 — HANDLE DUPLICATES AND NULLS
-#
 # Apply minimal cleaning before building the text used for embeddings.
-# The goal is to remove records that would either break the pipeline
-# or add little value to semantic search.
 # ==================================================================
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -183,8 +163,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         f"(dropped {before - len(df)})"
     )
 
-    # Remove rows without content, since content is the core text used
-    # for semantic embedding.
+    # Remove rows without content
     before = len(df)
     df = df.dropna(subset=["content"])
     print(f"  After null content removal: {len(df):,} rows "
@@ -197,8 +176,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     print(f"  After short content removal (<20 chars): {len(df):,} rows "
           f"(dropped {before - len(df)})")
 
-    # Remove exact duplicate prompt contents. Keeping repeated content
-    # would create identical or near-identical embeddings in the vector DB.
+    # Remove exact duplicate prompt contents.
     before = len(df)
     df = df.drop_duplicates(subset=["content"], keep="first")
     print(f"  After duplicate content removal: {len(df):,} rows "
@@ -214,7 +192,6 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     df["tags"] = df["tags"].apply(lambda x: x if isinstance(x, list) else [])
 
     # Reset row index so it is continuous after dropping rows.
-
     df = df.reset_index(drop=True)
 
     print(f"\n  Total rows removed: {initial_count - len(df):,}")
@@ -225,10 +202,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
 
 # ==================================================================
 # SECTION 5 — HANDLE PLACEHOLDERS
-#
 # Replace template variables with a neutral token before embedding.
-# This keeps the sentence structure while avoiding prompt-specific
-# variable names such as {{company_name}} or {{recipient_name}}.
 # ==================================================================
 
 def handle_placeholders(text: str) -> str:
@@ -245,11 +219,9 @@ def handle_placeholders(text: str) -> str:
 
 # ==================================================================
 # SECTION 6 — BUILD text_to_embed FIELD
-#
 # Constructs the string passed to the embedding model for each prompt.
 # Combining title, content, and tags gives the model more context than
-# content alone — the title provides a compact label, the tags provide
-# topic keywords that may not appear explicitly in the body text.
+# content alone.
 # ==================================================================
 
 def build_text_to_embed(row: pd.Series) -> str:
@@ -269,7 +241,6 @@ def build_text_to_embed(row: pd.Series) -> str:
 
 # ==================================================================
 # SECTION 7 — NORMALISE METADATA
-#
 # Rescale numeric metadata columns to a common 0-1 range before they
 # are used in metadata-based scoring.
 # ==================================================================
@@ -302,7 +273,6 @@ def normalise_metadata(df: pd.DataFrame) -> tuple[pd.DataFrame, MinMaxScaler]:
 
 # ==================================================================
 # SECTION 8 — SAVE OUTPUTS
-#
 # Writes the three output files.
 # ==================================================================
 
@@ -336,18 +306,12 @@ def save_outputs(
     print(f"  Saved scaler -> {SCALER_OUTPUT_PATH}")
 
 # ==================================================================
-# SECTION 9 — MAIN ORCHESTRATOR
-#
-# This is the function that ties everything together. It calls each
-# step in the correct order. When you run `python preprocessing.py`
-# this is what executes.
-#
-# Do NOT change the order of steps — each one depends on the previous.
+# SECTION 9 — MAIN
 # ==================================================================
 
 def main():
     print("=" * 60)
-    print("Phase 1: EDA & Preprocessing")
+    print("EDA & Preprocessing")
     print("=" * 60)
 
     # STEP 1: Load raw data
@@ -362,9 +326,10 @@ def main():
     print("\n[3/6] Cleaning data")
     df = clean_data(df)
 
-    # STEP 4: Handle placeholders in the content field
+    # STEP 4: Handle placeholders in the fields
     print("\n[4/6] Handling placeholders in content")
     df["content"] = df["content"].apply(handle_placeholders)
+    df["title"] = df["title"].apply(handle_placeholders)
     replaced = df["has_placeholders"].sum()
     print(f"  Replaced {{{{...}}}} tokens with [VALUE] in {replaced:,} prompts ({replaced / len(df) * 100:.1f}%)")
 
@@ -380,14 +345,11 @@ def main():
     df_meta, scaler = normalise_metadata(df)
     save_outputs(df, df_meta, scaler)
 
-    print("\n✓ Preprocessing complete.")
+    print("\n Preprocessing complete.")
     print(f"  -> {CLEANED_OUTPUT_PATH}  (For emebeddings)")
     print(f"  -> {METADATA_OUTPUT_PATH} (For metadata fusion)")
     print(f"  -> {SCALER_OUTPUT_PATH}")
 
 
-# ==================================================================
-# ENTRY POINT
-# ==================================================================
 if __name__ == "__main__":
     main()

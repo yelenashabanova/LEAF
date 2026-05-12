@@ -11,8 +11,6 @@
 # OUTPUT FILES:
 #   - images/umap_by_category.png
 #   - images/tsne_by_category.png
-#
-# RUN:  python visualise_embeddings.py
 # ============================================================
 
 import json

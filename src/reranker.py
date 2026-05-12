@@ -12,6 +12,7 @@
 #
 # OUTPUT FUNCTIONS:
 #   - load_reranker()                 loads the cross-encoder model
+#   - retrieve_candidates()           asks ChromaDB for top 50 candidates
 #   - rerank()                        returns 50 prompt candidates re-sorted
 #                                     by reranker score
 # ============================================================
@@ -29,13 +30,14 @@ torch.manual_seed(SEED)
 
 # recommended model
 RERANKER_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+#RERANKER_MODEL_NAME = "BAAI/bge-reranker-v2-m3"
 
 # paths to connect to the ChromaDB built by vector_db.py.
 CHROMA_DB_PATH = "./chroma_db"
 COLLECTION_NAME = "prompts"
 EMBEDDINGS_PATH = "outputs/embeddings_meta.json"
 
-# how many candidates we ask to return before reranking
+# number candidates to retrieve before reranking
 DEFAULT_CANDIDATES = 50
 
 
@@ -52,6 +54,50 @@ def load_reranker(model_name=RERANKER_MODEL_NAME):
 
 
 
+# RETRIEVE CANDIDATES
+def retrieve_candidates(collection, encoder, query_text, n=DEFAULT_CANDIDATES):
+    """
+    Embed the query and retrieve the N closest prompts from ChromaDB
+    by cosine similarity. Returns a list of candidate dicts.
+    """
+
+    # embed the query into a vector
+    query_vector = encoder.encode(
+        [query_text],
+        normalize_embeddings=True,
+        convert_to_numpy=True,
+    )[0].tolist()
+
+    # find the 50 closest prompts by cosine similarity
+    raw = collection.query(
+        query_embeddings=[query_vector],
+        n_results=n,
+        include=["documents", "metadatas", "distances"],
+    )
+
+    # unpack the ChromaDB response and build the same dict format
+    candidates = []
+    ids = raw["ids"][0]
+    documents = raw["documents"][0]
+    metadatas = raw["metadatas"][0]
+    distances = raw["distances"][0]
+
+    rank = 1
+    for i in range(len(ids)):
+        candidate = {
+            "id": ids[i],
+            "content": documents[i],
+            "metadata": metadatas[i],
+            "similarity": 1.0 - float(distances[i]),
+            "rank": rank,
+        }
+        candidates.append(candidate)
+        rank = rank + 1
+
+    return candidates
+
+
+
 # RERANK
 def rerank(reranker, query_text, candidates):
     """
@@ -59,7 +105,7 @@ def rerank(reranker, query_text, candidates):
 
     reranker: CrossEncoder — the loaded model (from load_reranker)
     query_text: str — the user's search query
-    candidates: list[dict]   — 50 prompts retrieved from ChromaDB
+    candidates: list[dict] — 50 prompts retrieved from ChromaDB
     """
 
     # build input pairs for cross-encoder [query, 1/50 candidate prompts]
@@ -91,6 +137,8 @@ def rerank(reranker, query_text, candidates):
     # output sorted dicts with two new keys: "reranker_score" and "reranker_rank"
     return reranked
 
+
+
 # PRINT RESULTS
 def print_reranked_results(results, top_n=5):
     """
@@ -110,14 +158,12 @@ def print_reranked_results(results, top_n=5):
         print(f"{reranker_rank:>4}  {original_rank:>4}  {score:>7}  {prompt_id:<10}  {category:<18}  {title}")
 
 
-# SAMPLE QUERIES
-def run_sample_queries(reranker):
-    """
-    Run two example queries to verify the reranker works.
-    Calls for rerank() and print_reranked_results() functions
-    """
 
-    print("SAMPLE QUERIES")
+def main():
+    print("RERANKER")
+
+    # call the loading reranker function in the variable
+    reranker = load_reranker()
 
     # connect to ChromaDB
     client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
@@ -133,65 +179,21 @@ def run_sample_queries(reranker):
         "write a job application cover letter",
     ]
 
-    # for each query
+    # for every sample query
     for query_text in sample_queries:
-        print("\nQuery: ", query_text)
+        print("\nQuery:", query_text)
 
-        # embed the query into a vector
-        query_vector = encoder.encode(
-            [query_text],
-            normalize_embeddings=True,
-            convert_to_numpy=True,
-        )[0].tolist()
+        candidates = retrieve_candidates(collection, encoder, query_text)
 
-        # find the 50 closest prompts by cosine similarity
-        raw = collection.query(
-            query_embeddings=[query_vector],
-            n_results=DEFAULT_CANDIDATES,
-            include=["documents", "metadatas", "distances"],
-        )
-
-        # unpack the ChromaDB response and build the same dict format
-        candidates = []
-        ids = raw["ids"][0]
-        documents = raw["documents"][0]
-        metadatas = raw["metadatas"][0]
-        distances = raw["distances"][0]
-
-        rank = 1
-        for i in range(len(ids)):
-            candidate = {
-                "id": ids[i],
-                "content": documents[i],
-                "metadata": metadatas[i],
-                "similarity": 1.0 - float(distances[i]),
-                "rank": rank,
-            }
-            candidates.append(candidate)
-            rank = rank + 1
-
-        print(f"\nBEFORE reranking (top 5):")
+        print("\nBEFORE reranking (top 5):")
         print_reranked_results(candidates, top_n=5)
 
-        # reranking
         reranked = rerank(reranker, query_text, candidates)
 
-        print(f"\nAFTER reranking (top 5):")
+        print("\nAFTER reranking (top 5):")
         print_reranked_results(reranked, top_n=5)
 
-
-
-# MAIN
-def main():
-    print("RERANKER")
-
-    # call the loading reranker function in the variable
-    reranker = load_reranker()
-
-    # run sample queries function with the loaded model
-    run_sample_queries(reranker)
-
-    print("\nReranker is done. Import rerank() and load_reranker() from this file")
+    print("\nReranker is done. Import load_reranker(), retrieve_candidates() and rerank() from this file")
 
 
 if __name__ == "__main__":

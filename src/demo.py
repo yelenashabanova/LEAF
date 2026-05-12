@@ -33,8 +33,8 @@ if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 os.chdir(SRC_DIR)
 
-from reranker import load_reranker, rerank
-from metadata_fusion import load_metadata, retrieve_candidates, fuse
+from reranker import load_reranker, rerank, retrieve_candidates
+from metadata_fusion import load_metadata, fuse
 
 # ---------------------------------------------------------------
 # CONFIGURATION

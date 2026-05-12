@@ -26,15 +26,15 @@
 #
 # RUN:  python evaluation.py
 # ============================================================
-
+# NEEDS TO BE REWRITTEN SO IT USES THE TEST SUBSET OF EVALUATION QUERIES
 import json
 import random
 import numpy as np
 import torch
 import chromadb
 from sentence_transformers import SentenceTransformer
-from reranker import load_reranker, rerank
-from metadata_fusion import load_metadata, retrieve_candidates, fuse
+from reranker import load_reranker, retrieve_candidates, rerank
+from metadata_fusion import load_metadata, fuse
 
 SEED = 42
 random.seed(SEED)

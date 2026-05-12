@@ -42,7 +42,7 @@ SECONDARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 # LOAD CLEANED DATA
 def load_cleaned_data(path):
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         records = json.load(f)
     print("Loaded", len(records), "cleaned records")
     return records

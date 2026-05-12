@@ -49,12 +49,13 @@ torch.manual_seed(SEED)
 CHROMA_DB_PATH   = "./chroma_db"
 COLLECTION_NAME  = "prompts"
 EMBEDDINGS_PATH  = "outputs/embeddings_meta.json"
-EVAL_PATH        = "outputs/eval_queries.json"
+EVAL_PATH = "eval_queries.json"
+BEST_WEIGHTS_PATH = "outputs/best_weights.json"
 
 # best weights found by Bayesian Optimisation in metadata_fusion.py
 # update these if you re-run tune_weights() with a new eval set
 # load best weights found by Bayesian Optimisation in metadata_fusion.py
-with open("outputs/best_weights.json") as f:
+with open(BEST_WEIGHTS_PATH, encoding="utf-8") as f:
     best_weights = json.load(f)
 
 BEST_ALPHA = best_weights["alpha"]
@@ -77,7 +78,7 @@ def precision_at_k(results, relevant_ids, k=5):
     Example: if 3 out of the top 5 results are relevant, P@5 = 0.6.
     Simple and intuitive but coarse — can only change in steps of 1/K.
     """
-    top_k_ids      = [r["id"] for r in results[:k]]
+    top_k_ids = [r["id"] for r in results[:k]]
     relevant_found = sum(1 for pid in top_k_ids if pid in relevant_ids)
     return relevant_found / k
 
@@ -127,12 +128,12 @@ def evaluate_configuration(results_per_query, eval_queries, label):
         mrr_scores.append(mean_reciprocal_rank(results, relevant_ids))
 
     mean_precision = round(sum(precision_scores) / len(precision_scores), 4)
-    mean_mrr       = round(sum(mrr_scores)       / len(mrr_scores),       4)
+    mean_mrr = round(sum(mrr_scores)       / len(mrr_scores),       4)
 
     return {
-        "label":     label,
+        "label": label,
         "precision": mean_precision,
-        "mrr":       mean_mrr,
+        "mrr": mean_mrr,
     }
 
 
@@ -150,9 +151,9 @@ def run_all_configurations(collection, encoder, reranker_model, metadata_lookup,
     """
 
     # store results for each configuration
-    results_vector   = []   # configuration A: vector search only
+    results_vector = []   # configuration A: vector search only
     results_reranker = []   # configuration B: vector + reranker
-    results_fused    = []   # configuration C: full pipeline
+    results_fused = []   # configuration C: full pipeline
 
     print("Running evaluation over", len(eval_queries), "queries...")
     print("(this runs the full pipeline 3 times — may take a few minutes)\n")
@@ -205,9 +206,9 @@ def print_comparison_table(scores):
     print("=" * 55)
 
     # show improvement from A to C
-    p_improvement   = round(scores[2]["precision"] - scores[0]["precision"], 4)
-    mrr_improvement = round(scores[2]["mrr"]       - scores[0]["mrr"],       4)
-    print("Overall improvement (A → C):")
+    p_improvement = round(scores[2]["precision"] - scores[0]["precision"], 4)
+    mrr_improvement = round(scores[2]["mrr"] - scores[0]["mrr"], 4)
+    print("Overall improvement (A to C):")
     print("  Precision@5:", "+" + str(p_improvement) if p_improvement >= 0 else str(p_improvement))
     print("  MRR:        ", "+" + str(mrr_improvement) if mrr_improvement >= 0 else str(mrr_improvement))
 
@@ -220,19 +221,27 @@ def main():
     print("EVALUATION")
 
     # load the annotated evaluation set
-    with open(EVAL_PATH) as f:
-        eval_queries = json.load(f)
-    print("Loaded", len(eval_queries), "evaluation queries")
+    with open(EVAL_PATH, encoding="utf-8") as f:
+        all_queries = json.load(f)
+    eval_queries = all_queries["test"]
+    print("Loaded", len(eval_queries), "test queries")
+
+    # best weights are frozen — loaded from file, not re-tuned here
+    print("Using weights:")
+    print("alpha =", BEST_ALPHA)
+    print("beta  =", BEST_BETA)
+    print("gamma =", BEST_GAMMA)
+    print("delta =", BEST_DELTA)
 
     # load metadata lookup
     metadata_lookup = load_metadata()
 
     # connect to ChromaDB
-    client     = chromadb.PersistentClient(path=CHROMA_DB_PATH)
+    client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
     collection = client.get_collection(name=COLLECTION_NAME)
 
     # load the query encoder
-    with open(EMBEDDINGS_PATH) as f:
+    with open(EMBEDDINGS_PATH, encoding="utf-8") as f:
         embedding_meta = json.load(f)
     encoder = SentenceTransformer(embedding_meta["model_name"])
 
@@ -245,15 +254,14 @@ def main():
     )
 
     # compute metrics for each configuration
-    score_a = evaluate_configuration(results_vector,   eval_queries, "A) Vector search only")
+    score_a = evaluate_configuration(results_vector, eval_queries, "A) Vector search only")
     score_b = evaluate_configuration(results_reranker, eval_queries, "B) Vector + reranker")
-    score_c = evaluate_configuration(results_fused,    eval_queries, "C) Full pipeline (+ fusion)")
+    score_c = evaluate_configuration(results_fused, eval_queries, "C) Full pipeline (+ fusion)")
 
     # print the comparison table
     print_comparison_table([score_a, score_b, score_c])
 
     print("\nEvaluation done.")
-    print("Person 1: feel free to extend with per-query breakdown, visualizations")
 
 
 if __name__ == "__main__":

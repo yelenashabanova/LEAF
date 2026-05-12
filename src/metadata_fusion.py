@@ -42,10 +42,11 @@ optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 # CONFIGURATION
 
-CHROMA_DB_PATH       = "./chroma_db"
-COLLECTION_NAME      = "prompts"
-EMBEDDINGS_PATH      = "outputs/embeddings_meta.json"
-METADATA_PATH        = "outputs/metadata_normalised.json"
+CHROMA_DB_PATH = "./chroma_db"
+COLLECTION_NAME = "prompts"
+EMBEDDINGS_PATH = "outputs/embeddings_meta.json"
+METADATA_PATH = "outputs/metadata_normalised.json"
+EVALUATION_SET_PATH = "eval_queries.json"
 
 # number candidates to retrieve from ChromaDB before reranking
 DEFAULT_CANDIDATES   = 50
@@ -62,7 +63,7 @@ def load_metadata(path=METADATA_PATH):
     where the key is the prompt ID and the value is the metadata dict,
     including likes, upvotes, uses and so on.
     """
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         records = json.load(f)
 
     # build a dict
@@ -80,15 +81,17 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
     Use Bayesian Optimisation (Optuna, TPE sampler) to find the best
     values of alpha, beta, gamma, delta that maximise search quality.
 
-    The objective function returns Precision@5 — how many of the top 5
-    results are actually relevant — which Optuna tries to maximise.
+    The objective function returns MRR (Mean Reciprocal Rank) — the average
+    of 1/rank where rank is the position of the first relevant result in the
+    top 10. Higher MRR means the first relevant result appears earlier.
+
     """
 
     def objective(trial):
-        alpha = trial.suggest_float("alpha", 0.5, 1.0)
-        beta = trial.suggest_float("beta", 0.0, 0.3)
-        gamma = trial.suggest_float("gamma", 0.0, 0.3)
-        delta = trial.suggest_float("delta", 0.0, 0.3)
+        alpha = trial.suggest_float("alpha", 0.7, 1.0)
+        beta = trial.suggest_float("beta", 0.0, 0.15)
+        gamma = trial.suggest_float("gamma", 0.0, 0.15)
+        delta = trial.suggest_float("delta", 0.0, 0.15)
 
         precision_scores = []
 
@@ -110,10 +113,33 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
         print("  Trial", trial.number + 1, "/", N_TRIALS, "— Precision@5:", round(mean_precision, 4))
 
         return mean_precision
+        #reciprocal_ranks = []
 
-    # create an Optuna study — same pattern as in the lecture notebook:
-    # study = optuna.create_study(direction="maximize")
-    # study.optimize(objective, n_trials=100)
+        #for item in eval_queries:
+        #    query_text = item["query"]
+        #    relevant_ids = set(item["relevant_ids"])
+
+        #    candidates = retrieve_candidates(collection, encoder, query_text)
+        #    reranked = rerank(reranker_model, query_text, candidates)
+        #    fused = fuse(reranked, metadata_lookup, alpha, beta, gamma, delta)
+
+            # find the rank of the first relevant result in the top 10
+        #    top10_ids = [c["id"] for c in fused[:10]]
+        #    reciprocal_rank = 0.0
+        #    for rank, prompt_id in enumerate(top10_ids, start=1):
+        #        if prompt_id in relevant_ids:
+        #            reciprocal_rank = 1.0 / rank
+        #            break  # only the first relevant result counts for MRR
+
+        #    reciprocal_ranks.append(reciprocal_rank)
+
+        #mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
+
+        #print("  Trial", trial.number + 1, "/", N_TRIALS, "— MRR:", round(mrr, 4))
+
+        #return mrr
+
+    # create an optuna study
     print("\nRunning Bayesian Optimisation for", N_TRIALS, "trials...")
     study = optuna.create_study(
         direction="maximize",
@@ -121,7 +147,7 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
     )
     study.optimize(objective, n_trials=N_TRIALS)
 
-    print("Best Precision@5:  ", round(study.best_value, 4))
+    print("Best MRR:          ", round(study.best_value, 4))
     print("Best weights found:", study.best_params)
 
     return study.best_params, study
@@ -159,9 +185,9 @@ def fuse(reranked, metadata_lookup, alpha, beta, gamma, delta):
 
         # look up popularity signals for this prompt
         meta = metadata_lookup.get(prompt_id, {})
-        norm_likes = meta.get("likes",    0.0)
-        norm_upvotes = meta.get("upvotes",  0.0)
-        norm_uses = meta.get("uses",     0.0)
+        norm_likes = meta.get("likes", 0.0)
+        norm_upvotes = meta.get("upvotes", 0.0)
+        norm_uses = meta.get("uses", 0.0)
 
         # weighted linear combination formula
         candidate["final_score"] = (
@@ -213,24 +239,24 @@ def main():
     metadata_lookup = load_metadata()
 
     # connect to ChromaDB
-    client     = chromadb.PersistentClient(path=CHROMA_DB_PATH)
+    client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
     collection = client.get_collection(name=COLLECTION_NAME)
 
     # load the same query encoder used in vector_db.py and reranker.py
-    with open(EMBEDDINGS_PATH) as f:
+    with open(EMBEDDINGS_PATH, encoding="utf-8") as f:
         embedding_meta = json.load(f)
     encoder = SentenceTransformer(embedding_meta["model_name"])
 
     # load the cross-encoder reranker from reranker.py
     reranker_model = load_reranker()
 
-    # load evaluation set and tune weights
-    with open("outputs/eval_queries.json") as f:
-        eval_queries = json.load(f)
+    # load validation part of evaluation set and tune weights
+    #with open(EVALUATION_SET_PATH, encoding="utf-8") as f:
+    #    eval_queries = json.load(f)
     # after eval set is extended  load evaluation set like this instead
-    #with open("outputs/eval_queries.json") as f:
-    #    all_queries = json.load(f)
-    #eval_queries = all_queries["validation"]
+    with open(EVALUATION_SET_PATH, encoding="utf-8") as f:
+        all_queries = json.load(f)
+    eval_queries = all_queries["validation"]
 
     best_weights, study = tune_weights(
         collection, encoder, reranker_model, metadata_lookup, eval_queries

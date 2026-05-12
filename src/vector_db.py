@@ -55,14 +55,14 @@ def load_inputs():
     embeddings = np.load(EMBEDDINGS_INPUT_PATH).astype(np.float32)
     print("Loaded embeddings:", embeddings.shape)
 
-    with open(IDS_INPUT_PATH) as f:
+    with open(IDS_INPUT_PATH, encoding="utf-8") as f:
         ids = json.load(f)
     print("Loaded", len(ids), "IDs")
 
-    with open(META_INPUT_PATH) as f:
+    with open(META_INPUT_PATH, encoding="utf-8") as f:
         run_meta = json.load(f)
 
-    with open(CLEANED_INPUT_PATH) as f:
+    with open(CLEANED_INPUT_PATH, encoding="utf-8") as f:
         records = json.load(f)
     print("Loaded", len(records), "cleaned records")
 

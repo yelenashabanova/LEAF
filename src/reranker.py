@@ -170,7 +170,7 @@ def main():
     collection = client.get_collection(name=COLLECTION_NAME)
 
     # load the embedding model from embeddings_meta.json
-    with open(EMBEDDINGS_PATH) as f:
+    with open(EMBEDDINGS_PATH, encoding="utf-8") as f:
         embedding_meta = json.load(f)
     encoder = SentenceTransformer(embedding_meta["model_name"])
 

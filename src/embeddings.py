@@ -13,7 +13,7 @@
 #   - outputs/embeddings_ids.json       prompt IDs aligned with embedding rows
 #   - outputs/embeddings_meta.json      run metadata (model, dim, seed, ...)
 #   - outputs/embeddings_bge.npy        secondary model vectors for A/B
-# RUN:  python embeddings.py
+#
 # ============================================================
 
 import json

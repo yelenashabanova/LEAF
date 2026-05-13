@@ -30,6 +30,9 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 from reranker import load_reranker, retrieve_candidates, rerank
 from metadata_fusion import load_metadata, fuse
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 SEED = 42
 random.seed(SEED)
@@ -38,7 +41,6 @@ torch.manual_seed(SEED)
 
 
 # CONFIGURATION
-
 CHROMA_DB_PATH   = "./chroma_db"
 COLLECTION_NAME  = "prompts"
 EMBEDDINGS_PATH  = "outputs/embeddings_meta.json"
@@ -127,7 +129,6 @@ def run_all_configurations(collection, encoder, reranker_model, metadata_lookup,
         candidates = retrieve_candidates(collection, encoder, query_text)
 
         # CONFIGURATION A — vector search only
-        # candidates are already sorted by cosine similarity, use as-is
         results_vector.append(candidates)
 
         # CONFIGURATION B — vector search + reranker
@@ -135,7 +136,6 @@ def run_all_configurations(collection, encoder, reranker_model, metadata_lookup,
         results_reranker.append(reranked)
 
         # CONFIGURATION C — full pipeline with metadata fusion
-        # use the best weights found by Bayesian Optimisation
         fused = fuse(reranked, metadata_lookup,
                      alpha=BEST_ALPHA,
                      beta=BEST_BETA,
@@ -158,7 +158,7 @@ def print_comparison_table(scores):
     print("-" * 55)
     for s in scores:
         print(f"{s['label']:<30}  {s['precision']:>6}  {s['mrr']:>6}")
-    print("=" * 55)
+    print("-" * 55)
 
     # show improvement from A to C
     p_improvement = round(scores[2]["precision"] - scores[0]["precision"], 4)
@@ -168,9 +168,144 @@ def print_comparison_table(scores):
     print("  MRR:        ", "+" + str(mrr_improvement) if mrr_improvement >= 0 else str(mrr_improvement))
 
 
+# VISUALIZATION
+def save_bar_chart(scores, path="images/metrics_comparison.png"):
+    """
+    Bar chart comparing P@5 and MRR across A, B, C configurations.
+    """
+
+    labels = [s["label"] for s in scores]
+    precisions = [s["precision"] for s in scores]
+    mrrs = [s["mrr"] for s in scores]
+    x = np.arange(len(labels))
+    width = 0.35
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    bars1 = ax.bar(x - width / 2, precisions, width, label="Precision@5", color="#2E5FA3", alpha=0.85)
+    bars2 = ax.bar(x + width / 2, mrrs,       width, label="MRR",         color="#E05C2A", alpha=0.85)
+    ax.set_ylabel("Score")
+    ax.set_title("Search Quality Comparison — A / B / C Configurations")
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=9)
+    ax.set_ylim(0, 1.05)
+    ax.legend()
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    for bar in list(bars1) + list(bars2):
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.01,
+                str(bar.get_height()), ha="center", va="bottom", fontsize=8)
+    plt.tight_layout()
+    plt.savefig(path, dpi=150)
+    plt.close()
+    print("Saved bar chart: ", path)
+
+# VISUALIZATION
+def save_per_query_chart(eval_queries, results_vector, results_reranker, results_fused,
+                         path="images/per_query_breakdown.png"):
+    """
+    Per-query MRR breakdown — shows which queries each configuration struggled with.
+    """
+
+    query_labels = [item["query"][:28] + "..." if len(item["query"]) > 28
+                    else item["query"] for item in eval_queries]
+    mrr_a, mrr_b, mrr_c = [], [], []
+    for i, item in enumerate(eval_queries):
+        relevant = set(item["relevant_ids"])
+        mrr_a.append(mean_reciprocal_rank(results_vector[i],   relevant))
+        mrr_b.append(mean_reciprocal_rank(results_reranker[i], relevant))
+        mrr_c.append(mean_reciprocal_rank(results_fused[i],    relevant))
+
+    x = np.arange(len(query_labels))
+    width = 0.28
+    fig, ax = plt.subplots(figsize=(max(12, len(query_labels) * 0.7), 6))
+    ax.bar(x - width, mrr_a, width, label="A) Vector only", color="#7FAED4", alpha=0.85)
+    ax.bar(x, mrr_b, width, label="B) + reranker",  color="#2E5FA3", alpha=0.85)
+    ax.bar(x + width, mrr_c, width, label="C) + fusion",    color="#E05C2A", alpha=0.85)
+    ax.set_ylabel("MRR")
+    ax.set_title("Per-Query MRR Breakdown — Which Queries Each Configuration Struggled With")
+    ax.set_xticks(x)
+    ax.set_xticklabels(query_labels, rotation=45, ha="right", fontsize=8)
+    ax.set_ylim(0, 1.1)
+    ax.legend()
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    plt.tight_layout()
+    plt.savefig(path, dpi=150)
+    plt.close()
+    print("Saved per-query chart: ", path)
+
+# VISUALIZATION
+def save_rank_scatter(eval_queries, results_vector, results_reranker,
+                      path="images/rank_scatter.png"):
+    """
+    Scatter plot comparing vector search rank and reranker rank
+    """
+    # lists for relevant documents
+    relevant_x = []
+    relevant_y = []
+
+    # lists for irrelevant documents
+    irrelevant_x = []
+    irrelevant_y = []
+
+    for i in range(len(eval_queries)):
+        query_data = eval_queries[i]
+        vector_results = results_vector[i]
+        reranker_results = results_reranker[i]
+
+        # relevant IDs for this query
+        relevant_ids = query_data["relevant_ids"]
+
+        # loop through reranked results
+        for rerank_doc in reranker_results[:50]:
+            doc_id = rerank_doc["id"]
+
+            # find original vector rank
+            vector_rank = None
+
+            for j in range(len(vector_results)):
+                if vector_results[j]["id"] == doc_id:
+                    vector_rank = j + 1
+                    break
+            if vector_rank is None: # skip if not found
+                continue
+            reranker_rank = rerank_doc["reranker_rank"]
+
+            # relevant document
+            if doc_id in relevant_ids:
+                relevant_x.append(vector_rank)
+                relevant_y.append(reranker_rank)
+
+            # irrelevant document
+            else:
+                irrelevant_x.append(vector_rank)
+                irrelevant_y.append(reranker_rank)
+
+    # plot
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    ax.scatter(irrelevant_x, irrelevant_y, color="#7A9BC2", alpha=0.25, s=18, label="Irrelevant")
+    ax.scatter(relevant_x, relevant_y, color="#2E8B57", alpha=0.95, s=32, label="Relevant")
+    ax.plot([1, 50],[1, 50], linestyle="--", linewidth=1, color="#E05C2A", label="No change (diagonal)")
+
+    ax.set_xlabel("Vector search rank (cosine similarity)")
+    ax.set_ylabel("Reranker rank (cross-encoder)")
+    ax.set_title("Cosine Similarity Rank vs Reranker Rank")
+    ax.legend(fontsize=9)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    plt.tight_layout()
+    plt.savefig(path, dpi=150)
+    plt.close()
+
+    print("Saved rank scatter: ", path)
+
+
+
+
 # MAIN
 def main():
-    print("EVALUATION")
+    print("\nEVALUATION")
 
     # load the annotated evaluation set
     with open(EVAL_PATH, encoding="utf-8") as f:
@@ -212,6 +347,12 @@ def main():
 
     # print the comparison table
     print_comparison_table([score_a, score_b, score_c])
+
+    # generate 3 visualisations
+    print("\nGenerating visualisations...")
+    save_bar_chart([score_a, score_b, score_c])
+    save_per_query_chart(eval_queries, results_vector, results_reranker, results_fused)
+    save_rank_scatter(eval_queries, results_vector, results_reranker)
 
     print("\nEvaluation done.")
 

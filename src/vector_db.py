@@ -15,7 +15,6 @@
 #   - chroma_db/                      persistent ChromaDB store
 #                                     (one collection: COLLECTION_NAME)
 #
-# RUN:  python vector_db.py
 # ============================================================
 
 import json

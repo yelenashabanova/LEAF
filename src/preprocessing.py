@@ -21,11 +21,8 @@ random.seed(42)
 np.random.seed(42)
 
 
-# ==================================================================
-# SECTION 1 — CONFIGURATION
-#
-# Central configuration for file paths and preprocessing constants.
-# ==================================================================
+
+# CONFIGURATION
 
 #Input dataset provided
 DATASET_PATH = "LEAF-promptkaban-dataset/dataset.json"
@@ -34,10 +31,7 @@ CLEANED_OUTPUT_PATH = "outputs/cleaned_data.json"
 METADATA_OUTPUT_PATH = "outputs/metadata_normalised.json"
 SCALER_OUTPUT_PATH = "outputs/scaler.pkl"
 
-# Columns that will be normalised to 0-1 range for metadata scoring.
-# Numeric metadata fields selected for normalisation.
-# These columns represent popularity, usage, and author-quality signals
-# that may later be combined with semantic similarity scores.
+# Columns that will be normalised to 0-1 range for metadata scoring
 METADATA_COLS_TO_NORMALISE = [
     "likes",
     "upvotes",
@@ -46,17 +40,13 @@ METADATA_COLS_TO_NORMALISE = [
     "author_reputation",
 ]
 
-# Pattern used to identify template variables such as {{company_name}}
-# or {{target_audience}} inside prompt texts.
+# Pattern used to identify template variables such as {{company_name}} inside prompt texts
 PLACEHOLDER_PATTERN = re.compile(r"\{\{.*?\}\}|\{\{\w+")
 
 
-# ==================================================================
-# SECTION 2 — LOAD DATA
-# Load the raw JSON dataset into a pandas DataFrame.
-# ==================================================================
 
-def load_data(path: str) -> pd.DataFrame:
+# LOAD DATA
+def load_data(path):
     """
     Load the LEAF PromptKaban dataset from a JSON file and return
     it as a pandas DataFrame.
@@ -72,12 +62,9 @@ def load_data(path: str) -> pd.DataFrame:
     return df
 
 
-# ==================================================================
-# SECTION 3 — EXPLORATORY DATA ANALYSIS (EDA)
-# Inspect the raw dataset before applying any modifications.
-# ==================================================================
 
-def run_eda(df: pd.DataFrame) -> None:
+# EXPLORATORY DATA ANALYSIS (EDA)
+def run_eda(df):
     """
     Print the main exploratory statistics used to understand the dataset.
 
@@ -138,12 +125,9 @@ def run_eda(df: pd.DataFrame) -> None:
     print("\n EDA COMPLETE \n")
 
 
-# ==================================================================
-# SECTION 4 — HANDLE DUPLICATES AND NULLS
-# Apply minimal cleaning before building the text used for embeddings.
-# ==================================================================
 
-def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+# HANDLE DUPLICATES AND NULLS
+def clean_data(df):
     """
     Clean the dataset before embedding.
 
@@ -200,37 +184,22 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-# ==================================================================
-# SECTION 5 — HANDLE PLACEHOLDERS
-# Replace template variables with a neutral token before embedding.
-# ==================================================================
 
-def handle_placeholders(text: str) -> str:
+# HANDLE PLACEHOLDERS
+def handle_placeholders(text):
     """
     Replace {{variable}} template tokens with the neutral word [VALUE].
-
-    Raw tokens like {{recipient_name}} are meaningless to an embedding model.
-    Substituting [VALUE] preserves sentence structure while removing noise,
-    so the model can still interpret the prompt's intent correctly.
     """
     cleaned = PLACEHOLDER_PATTERN.sub("[VALUE]", text)
     cleaned = re.sub(r" {2,}", " ", cleaned)
     return cleaned.strip()
 
-# ==================================================================
-# SECTION 6 — BUILD text_to_embed FIELD
-# Constructs the string passed to the embedding model for each prompt.
-# Combining title, content, and tags gives the model more context than
-# content alone.
-# ==================================================================
 
-def build_text_to_embed(row: pd.Series) -> str:
+# BUILD text_to_embed FIELD
+def build_text_to_embed(row):
     """
-    Concatenate title, content, and tags into a single string for embedding.
-
-    Title goes first as a compact semantic label, followed by the full
-    prompt body, then tags as topic keywords. A period separates the
-    title from the content so the model treats them as distinct phrases.
+    Concatenate title, content, and tags into a single string
+    to give more context for embedding.
     """
     title = str(row["title"])
     content = str(row["content"])
@@ -239,15 +208,11 @@ def build_text_to_embed(row: pd.Series) -> str:
     return f"{title}. {content} {tags_str}".strip()
 
 
-# ==================================================================
-# SECTION 7 — NORMALISE METADATA
-# Rescale numeric metadata columns to a common 0-1 range before they
-# are used in metadata-based scoring.
-# ==================================================================
 
-def normalise_metadata(df: pd.DataFrame) -> tuple[pd.DataFrame, MinMaxScaler]:
+# NORMALISE METADATA
+def normalise_metadata(df):
     """
-    Normalise selected metadata columns using MinMaxScaler.
+    Normalise selected metadata columns to 0-1 range using MinMaxScaler.
 
     A net_score column is also created from likes, upvotes, and downvotes
     to provide a simple combined engagement signal.
@@ -271,22 +236,14 @@ def normalise_metadata(df: pd.DataFrame) -> tuple[pd.DataFrame, MinMaxScaler]:
 
     return meta, scaler
 
-# ==================================================================
-# SECTION 8 — SAVE OUTPUTS
-# Writes the three output files.
-# ==================================================================
 
-def save_outputs(
-        df_cleaned: pd.DataFrame,
-        df_meta: pd.DataFrame,
-        scaler: MinMaxScaler,
-) -> None:
+# SAVE OUTPUTS
+def save_outputs(df_cleaned, df_meta, scaler):
     """
     Save the preprocessing outputs.
-
     cleaned_data.json is used for the embedding phase.
     metadata_normalised.json is used the for metadata fusion.
-    scaler.pkl stores the fitted MinMaxScaler for future transformations.
+    scaler.pkl stores the fitted MinMaxScaler for the future.
     """
 
     # OUTPUT 1: cleaned dataset
@@ -305,14 +262,10 @@ def save_outputs(
     joblib.dump(scaler, SCALER_OUTPUT_PATH)
     print(f"  Saved scaler -> {SCALER_OUTPUT_PATH}")
 
-# ==================================================================
-# SECTION 9 — MAIN
-# ==================================================================
 
+# MAIN
 def main():
-    print("=" * 60)
-    print("EDA & Preprocessing")
-    print("=" * 60)
+    print("\nEDA & Preprocessing")
 
     # STEP 1: Load raw data
     print("\n[1/6] Loading dataset")

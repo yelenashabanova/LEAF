@@ -87,9 +87,9 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
 
     def objective(trial):
         alpha = trial.suggest_float("alpha", 0.7, 1.0)
-        beta = trial.suggest_float("beta", 0.0, 0.15)
-        gamma = trial.suggest_float("gamma", 0.0, 0.15)
-        delta = trial.suggest_float("delta", 0.0, 0.15)
+        beta = trial.suggest_float("beta", 0.0, 0.2)
+        gamma = trial.suggest_float("gamma", 0.0, 0.2)
+        delta = trial.suggest_float("delta", 0.0, 0.2)
 
         precision_scores = []
 
@@ -111,31 +111,6 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
         print("  Trial", trial.number + 1, "/", N_TRIALS, "— Precision@5:", round(mean_precision, 4))
 
         return mean_precision
-        #reciprocal_ranks = []
-
-        #for item in eval_queries:
-        #    query_text = item["query"]
-        #    relevant_ids = set(item["relevant_ids"])
-
-        #    candidates = retrieve_candidates(collection, encoder, query_text)
-        #    reranked = rerank(reranker_model, query_text, candidates)
-        #    fused = fuse(reranked, metadata_lookup, alpha, beta, gamma, delta)
-
-            # find the rank of the first relevant result in the top 10
-        #    top10_ids = [c["id"] for c in fused[:10]]
-        #    reciprocal_rank = 0.0
-        #    for rank, prompt_id in enumerate(top10_ids, start=1):
-        #        if prompt_id in relevant_ids:
-        #            reciprocal_rank = 1.0 / rank
-        #            break  # only the first relevant result counts for MRR
-
-        #    reciprocal_ranks.append(reciprocal_rank)
-
-        #mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
-
-        #print("  Trial", trial.number + 1, "/", N_TRIALS, "— MRR:", round(mrr, 4))
-
-        #return mrr
 
     # create an optuna study
     print("\nRunning Bayesian Optimisation for", N_TRIALS, "trials...")
@@ -159,17 +134,14 @@ def fuse(reranked, metadata_lookup, alpha, beta, gamma, delta):
     The reranker score alone tells us how relevant a prompt is to the query.
     But two equally relevant prompts are not equally good — one might have
     thousands of uses and high likes, meaning real users found it valuable.
-
-    Returns the same list re-sorted by final_score, with two new keys added:
-    "final_score" and "final_rank".
     """
 
     # the reranker scores are raw logits
     # the metadata signals are already normalised
     # to make them comparable we normalise the reranker scores to 0-1 too
     all_scores = [c["reranker_score"] for c in reranked]
-    min_score  = min(all_scores)
-    max_score  = max(all_scores)
+    min_score = min(all_scores)
+    max_score = max(all_scores)
     score_range = max_score - min_score
 
     for candidate in reranked:
@@ -268,19 +240,10 @@ def main():
     print("Saved best weights to outputs/best_weights.json")
 
     # generate and save visualizations
-    fig1 = optuna.visualization.plot_optimization_history(study)
-    fig2 = optuna.visualization.plot_param_importances(study)
-    fig3 = optuna.visualization.plot_parallel_coordinate(study)
-    fig4 = optuna.visualization.plot_slice(study)
-
-    for fig, name in [
-        (fig1, "optimization_history"),
-        (fig2, "param_importances"),
-        (fig3, "parallel_coordinate"),
-        (fig4, "param_slice"),
-    ]:
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
-        fig.write_image("images/" + name + ".png")
+    optuna.visualization.plot_optimization_history(study).write_image("images/optimization_history.png")
+    optuna.visualization.plot_param_importances(study).write_image("images/param_importances.png")
+    optuna.visualization.plot_parallel_coordinate(study).write_image("images/parallel_coordinate.png")
+    optuna.visualization.plot_slice(study).write_image("images/param_slice.png")
 
     print("Saved visualisations to images/")
 
@@ -289,7 +252,7 @@ def main():
 
     sample_queries = [
         "summarise a long document",
-        "write a job application cover letter",
+        "create a weekly meal plan",
     ]
 
     for query_text in sample_queries:

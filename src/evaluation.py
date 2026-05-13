@@ -2,21 +2,17 @@
 # FILE: evaluation.py
 # ROLE: Phase 5 — Measure and compare the search quality of
 #       three pipeline configurations using the manually
-#       annotated evaluation set (outputs/eval_queries.json).
+#       annotated evaluation set (eval_queries.json).
 #
 #       The three configurations compared are:
-#         A) Vector search only       (cosine similarity, no reranker)
+#         A) Vector search only (cosine similarity, no reranker)
 #         B) Vector search + reranker (cross-encoder)
-#         C) Full pipeline            (reranker + metadata fusion)
+#         C) Full pipeline (reranker + metadata fusion)
 #
 #       Two metrics are computed for each configuration:
 #         Precision@5 — how many of the top 5 results are relevant
-#         MRR         — where does the first relevant result appear
+#         MRR — where does the first relevant result appear
 #
-#       The results are printed as a comparison table so the
-#       improvement at each stage is clearly visible.
-#       Person 1 can extend this file with additional metrics
-#       or visualisations as needed.
 #
 # INPUT FILES:
 #   - chroma_db/                        ChromaDB from vector_db.py
@@ -24,9 +20,8 @@
 #   - outputs/metadata_normalised.json  normalised popularity signals
 #   - outputs/eval_queries.json         manually annotated evaluation set
 #
-# RUN:  python evaluation.py
 # ============================================================
-# NEEDS TO BE REWRITTEN SO IT USES THE TEST SUBSET OF EVALUATION QUERIES
+
 import json
 import random
 import numpy as np
@@ -42,9 +37,7 @@ np.random.seed(SEED)
 torch.manual_seed(SEED)
 
 
-# ---------------------------------------------------------------
 # CONFIGURATION
-# ---------------------------------------------------------------
 
 CHROMA_DB_PATH   = "./chroma_db"
 COLLECTION_NAME  = "prompts"
@@ -53,8 +46,6 @@ EVAL_PATH = "eval_queries.json"
 BEST_WEIGHTS_PATH = "outputs/best_weights.json"
 
 # best weights found by Bayesian Optimisation in metadata_fusion.py
-# update these if you re-run tune_weights() with a new eval set
-# load best weights found by Bayesian Optimisation in metadata_fusion.py
 with open(BEST_WEIGHTS_PATH, encoding="utf-8") as f:
     best_weights = json.load(f)
 
@@ -67,16 +58,11 @@ BEST_DELTA = best_weights["delta"]
 DEFAULT_CANDIDATES = 50
 
 
-# ---------------------------------------------------------------
-# METRICS
-# ---------------------------------------------------------------
 
+# METRICS
 def precision_at_k(results, relevant_ids, k=5):
     """
     Precision@K — what fraction of the top K results are relevant.
-
-    Example: if 3 out of the top 5 results are relevant, P@5 = 0.6.
-    Simple and intuitive but coarse — can only change in steps of 1/K.
     """
     top_k_ids = [r["id"] for r in results[:k]]
     relevant_found = sum(1 for pid in top_k_ids if pid in relevant_ids)
@@ -86,14 +72,6 @@ def precision_at_k(results, relevant_ids, k=5):
 def mean_reciprocal_rank(results, relevant_ids):
     """
     MRR — score based on where the FIRST relevant result appears.
-
-    If the first relevant result is at rank 1: score = 1/1 = 1.0
-    If the first relevant result is at rank 2: score = 1/2 = 0.5
-    If the first relevant result is at rank 5: score = 1/5 = 0.2
-    If no relevant result in top 10:           score = 0.0
-
-    More sensitive than Precision@K because it distinguishes between
-    finding the first relevant result at rank 1 vs rank 5.
     """
     for rank, result in enumerate(results[:10], start=1):
         if result["id"] in relevant_ids:
@@ -101,34 +79,24 @@ def mean_reciprocal_rank(results, relevant_ids):
     return 0.0
 
 
-# ---------------------------------------------------------------
 # EVALUATE ONE CONFIGURATION
-# ---------------------------------------------------------------
-
 def evaluate_configuration(results_per_query, eval_queries, label):
     """
     Compute Precision@5 and MRR for one pipeline configuration.
-
-    results_per_query : list[list[dict]] — one result list per query,
-                        in the same order as eval_queries
-    eval_queries      : list[dict]       — the annotated evaluation set
-    label             : str              — name of this configuration
-                        e.g. "A) Vector only"
-
     Returns a dict with the computed scores for this configuration.
     """
     precision_scores = []
-    mrr_scores       = []
+    mrr_scores = []
 
     for i, item in enumerate(eval_queries):
         relevant_ids = set(item["relevant_ids"])
-        results      = results_per_query[i]
+        results = results_per_query[i]
 
         precision_scores.append(precision_at_k(results, relevant_ids, k=5))
         mrr_scores.append(mean_reciprocal_rank(results, relevant_ids))
 
     mean_precision = round(sum(precision_scores) / len(precision_scores), 4)
-    mean_mrr = round(sum(mrr_scores)       / len(mrr_scores),       4)
+    mean_mrr = round(sum(mrr_scores) / len(mrr_scores), 4)
 
     return {
         "label": label,
@@ -137,17 +105,11 @@ def evaluate_configuration(results_per_query, eval_queries, label):
     }
 
 
-# ---------------------------------------------------------------
 # RUN ALL THREE CONFIGURATIONS
-# ---------------------------------------------------------------
-
 def run_all_configurations(collection, encoder, reranker_model, metadata_lookup, eval_queries):
     """
     Run the full evaluation set through all three pipeline configurations
     and return results for each so they can be compared.
-
-    This function runs through all queries three times — once per
-    configuration — so it may take a few minutes to complete.
     """
 
     # store results for each configuration
@@ -156,13 +118,12 @@ def run_all_configurations(collection, encoder, reranker_model, metadata_lookup,
     results_fused = []   # configuration C: full pipeline
 
     print("Running evaluation over", len(eval_queries), "queries...")
-    print("(this runs the full pipeline 3 times — may take a few minutes)\n")
 
     for i, item in enumerate(eval_queries):
         query_text = item["query"]
         print("Query", i + 1, "/", len(eval_queries), ":", query_text)
 
-        # STEP 1 — retrieve 50 candidates from ChromaDB (same for all configs)
+        # STEP 1 — retrieve candidates from ChromaDB (same for all configs)
         candidates = retrieve_candidates(collection, encoder, query_text)
 
         # CONFIGURATION A — vector search only
@@ -185,20 +146,14 @@ def run_all_configurations(collection, encoder, reranker_model, metadata_lookup,
     return results_vector, results_reranker, results_fused
 
 
-# ---------------------------------------------------------------
-# PRINT COMPARISON TABLE
-# ---------------------------------------------------------------
 
+# PRINT COMPARISON TABLE
 def print_comparison_table(scores):
     """
     Print a clean comparison table of all three configurations.
-
-    scores : list[dict] — one dict per configuration, each with
-             "label", "precision", "mrr"
     """
-    print("\n" + "=" * 55)
+
     print("EVALUATION RESULTS")
-    print("=" * 55)
     print(f"{'Configuration':<30}  {'P@5':>6}  {'MRR':>6}")
     print("-" * 55)
     for s in scores:
@@ -213,10 +168,7 @@ def print_comparison_table(scores):
     print("  MRR:        ", "+" + str(mrr_improvement) if mrr_improvement >= 0 else str(mrr_improvement))
 
 
-# ---------------------------------------------------------------
 # MAIN
-# ---------------------------------------------------------------
-
 def main():
     print("EVALUATION")
 
@@ -226,7 +178,7 @@ def main():
     eval_queries = all_queries["test"]
     print("Loaded", len(eval_queries), "test queries")
 
-    # best weights are frozen — loaded from file, not re-tuned here
+    # best weights are frozen
     print("Using weights:")
     print("alpha =", BEST_ALPHA)
     print("beta  =", BEST_BETA)

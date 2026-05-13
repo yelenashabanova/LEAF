@@ -22,6 +22,7 @@ import chromadb
 import json
 from sentence_transformers import CrossEncoder, SentenceTransformer
 
+
 SEED = 42
 torch.manual_seed(SEED)
 
@@ -49,6 +50,7 @@ def load_reranker(model_name=RERANKER_MODEL_NAME):
     """
     print("Loading reranker model:", model_name)
     reranker = CrossEncoder(model_name)
+
 
     return reranker
 
@@ -176,7 +178,7 @@ def main():
 
     sample_queries = [
         "summarise a long document",
-        "write a job application cover letter",
+        "create a weekly meal plan",
     ]
 
     # for every sample query

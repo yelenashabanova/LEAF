@@ -49,10 +49,10 @@ METADATA_PATH = "outputs/metadata_normalised.json"
 EVALUATION_SET_PATH = "eval_queries.json"
 
 # number candidates to retrieve from ChromaDB before reranking
-DEFAULT_CANDIDATES   = 50
+DEFAULT_CANDIDATES = 50
 
 # Bayesian Optimisation trials to run when tuning weights
-N_TRIALS = 30
+N_TRIALS = 25
 
 
 
@@ -81,9 +81,7 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
     Use Bayesian Optimisation (Optuna, TPE sampler) to find the best
     values of alpha, beta, gamma, delta that maximise search quality.
 
-    The objective function returns MRR (Mean Reciprocal Rank) — the average
-    of 1/rank where rank is the position of the first relevant result in the
-    top 10. Higher MRR means the first relevant result appears earlier.
+    The objective function returns Precision at k=5
 
     """
 
@@ -251,9 +249,6 @@ def main():
     reranker_model = load_reranker()
 
     # load validation part of evaluation set and tune weights
-    #with open(EVALUATION_SET_PATH, encoding="utf-8") as f:
-    #    eval_queries = json.load(f)
-    # after eval set is extended  load evaluation set like this instead
     with open(EVALUATION_SET_PATH, encoding="utf-8") as f:
         all_queries = json.load(f)
     eval_queries = all_queries["validation"]

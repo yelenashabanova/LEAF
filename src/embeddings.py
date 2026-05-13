@@ -40,6 +40,7 @@ PRIMARY_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 SECONDARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 
+
 # LOAD CLEANED DATA
 def load_cleaned_data(path):
     with open(path, encoding="utf-8") as f:

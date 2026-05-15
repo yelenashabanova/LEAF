@@ -9,10 +9,9 @@
 #   - outputs/cleaned_data.json         from preprocessing.py
 #
 # OUTPUT FILES:
-#   - outputs/embeddings.npy            primary model vectors (MiniLM, 384-dim)
+#   - outputs/embeddings.npy            model vectors (BGE-small-en-v1.5, 384-dim)
 #   - outputs/embeddings_ids.json       prompt IDs aligned with embedding rows
 #   - outputs/embeddings_meta.json      run metadata (model, dim, seed, ...)
-#   - outputs/embeddings_bge.npy        secondary model vectors for A/B
 #
 # ============================================================
 
@@ -34,11 +33,8 @@ CLEANED_INPUT_PATH = "outputs/cleaned_data.json"
 EMBEDDINGS_OUTPUT_PATH = "outputs/embeddings.npy"
 IDS_OUTPUT_PATH = "outputs/embeddings_ids.json"
 META_OUTPUT_PATH = "outputs/embeddings_meta.json"
-#EMBEDDINGS_BGE_OUTPUT_PATH = "outputs/embeddings_bge.npy"
 
-PRIMARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
-#SECONDARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
-
+MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 
 # LOAD CLEANED DATA
@@ -75,12 +71,13 @@ def prepare_inputs(records):
 
     return texts, ids
 
+
 # ENCODE TEXTS
 def encode_texts(model_name, texts):
     print("Loading model:", model_name)
     model = SentenceTransformer(model_name)
 
-    print("Encoding", len(texts), "texts...")
+    print("Encoding", len(texts), "texts.")
     start = time.time()
     embeddings = model.encode(
         texts,
@@ -108,7 +105,7 @@ def save_outputs(embeddings, ids, model_name):
 
     with open(IDS_OUTPUT_PATH, "w") as f:
         json.dump(ids, f)
-    print("Saved", len(ids), "IDs ->", IDS_OUTPUT_PATH)
+    print("Saved", len(ids), "IDs:", IDS_OUTPUT_PATH)
 
     meta = {
         "model_name": model_name,
@@ -120,7 +117,7 @@ def save_outputs(embeddings, ids, model_name):
     }
     with open(META_OUTPUT_PATH, "w") as f:
         json.dump(meta, f, indent=2)
-    print("Saved meta ->", META_OUTPUT_PATH)
+    print("Saved meta:", META_OUTPUT_PATH)
 
 
 # MAIN
@@ -130,14 +127,8 @@ def main():
     records = load_cleaned_data(CLEANED_INPUT_PATH)
     texts, ids = prepare_inputs(records)
 
-    print("\nPrimary model:", PRIMARY_MODEL_NAME)
-    embeddings = encode_texts(PRIMARY_MODEL_NAME, texts)
-    save_outputs(embeddings, ids, PRIMARY_MODEL_NAME)
-
-    #print("\nSecondary model:", SECONDARY_MODEL_NAME)
-    #embeddings_bge = encode_texts(SECONDARY_MODEL_NAME, texts)
-    #np.save(EMBEDDINGS_BGE_OUTPUT_PATH, embeddings_bge)
-    #print("Saved", embeddings_bge.shape, "->", EMBEDDINGS_BGE_OUTPUT_PATH)
+    embeddings = encode_texts(MODEL_NAME, texts)
+    save_outputs(embeddings, ids, MODEL_NAME)
 
 
 if __name__ == "__main__":

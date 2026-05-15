@@ -110,7 +110,7 @@ def main():
               xlabel="UMAP 1", ylabel="UMAP 2",
               path=f"{IMAGES_DIR}/umap_by_category.png")
 
-    # t-SNE — PCA to 50 dims first
+    # t-SNE - PCA to 50 dims first
     pca   = PCA(n_components=50, random_state=SEED)
     X_pca = pca.fit_transform(X)
 

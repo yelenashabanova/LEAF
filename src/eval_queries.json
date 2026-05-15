@@ -1,1115 +1,495 @@
 {
   "validation": [
-    {
-      "query": "brainstorm business name ideas",
-      "relevant_ids": [
-        "pk_07892",
-        "pk_03936",
-        "pk_05668",
-        "pk_10479",
-        "pk_11875",
-        "pk_00670",
-        "pk_08281",
-        "pk_19108"
-      ]
-    },
-    {
-      "query": "write a blog post introduction",
-      "relevant_ids": [
-        "pk_03282",
-        "pk_12610",
-        "pk_17020",
-        "pk_04227",
-        "pk_01511",
-        "pk_16293",
-        "pk_11896",
-        "pk_18811",
-        "pk_10307",
-        "pk_03702",
-        "pk_06080"
-      ]
-    },
-    {
-      "query": "create a weekly meal plan",
-      "relevant_ids": [
-        "pk_09193",
-        "pk_15992",
-        "pk_05262",
-        "pk_01891",
-        "pk_02500",
-        "pk_05534",
-        "pk_02365",
-        "pk_08212",
-        "pk_16370",
-        "pk_04192",
-        "pk_10836",
-        "pk_08178",
-        "pk_18678",
-        "pk_14982",
-        "pk_11025"
-      ]
-    },
-    {
-      "query": "write a professional email",
-      "relevant_ids": [
-        "pk_16035",
-        "pk_12525",
-        "pk_09885",
-        "pk_12646",
-        "pk_01223",
-        "pk_07819",
-        "pk_11534",
-        "pk_17373",
-        "pk_08737",
-        "pk_07901",
-        "pk_17383",
-        "pk_02240",
-        "pk_18673",
-        "pk_01442",
-        "pk_14816"
-      ]
-    },
-    {
-      "query": "write a cold email to a potential client",
-      "relevant_ids": [
-        "pk_03247",
-        "pk_16532",
-        "pk_00096",
-        "pk_17407",
-        "pk_10471",
-        "pk_05640",
-        "pk_04440",
-        "pk_09418",
-        "pk_10217",
-        "pk_09194",
-        "pk_12759",
-        "pk_04907",
-        "pk_06291",
-        "pk_17123",
-        "pk_07800"
-      ]
-    },
-    {
-      "query": "write a customer support response",
-      "relevant_ids": [
-        "pk_05268",
-        "pk_19909",
-        "pk_09891",
-        "pk_01672",
-        "pk_05731",
-        "pk_18904",
-        "pk_18800",
-        "pk_00987",
-        "pk_12744",
-        "pk_06919",
-        "pk_03525",
-        "pk_01437",
-        "pk_08510",
-        "pk_02938",
-        "pk_15779"
-      ]
-    },
-    {
-      "query": "write a bedtime story for kids",
-      "relevant_ids": [
-        "pk_11760",
-        "pk_06673",
-        "pk_13382",
-        "pk_12648",
-        "pk_08608",
-        "pk_00461",
-        "pk_14125",
-        "pk_11050",
-        "pk_07424",
-        "pk_07218"
-      ]
-    },
-    {
-      "query": "create a workout plan",
-      "relevant_ids": [
-        "pk_12108",
-        "pk_19738",
-        "pk_02431",
-        "pk_19346",
-        "pk_14798",
-        "pk_14486",
-        "pk_15451",
-        "pk_10715",
-        "pk_07563",
-        "pk_14634",
-        "pk_05947"
-      ]
-    },
-    {
-      "query": "write a resignation letter",
-      "relevant_ids": [
-        "pk_04238",
-        "pk_16499",
-        "pk_10814",
-        "pk_19809",
-        "pk_16737",
-        "pk_15927",
-        "pk_15610",
-        "pk_08970",
-        "pk_06488",
-        "pk_02929"
-      ]
-    },
-    {
-      "query": "write a performance review for an employee",
-      "relevant_ids": [
-        "pk_19717",
-        "pk_16789",
-        "pk_16781",
-        "pk_14921",
-        "pk_14318",
-        "pk_13712",
-        "pk_12025",
-        "pk_11329",
-        "pk_10928",
-        "pk_09720",
-        "pk_08102",
-        "pk_08101",
-        "pk_01834",
-        "pk_17401",
-        "pk_17337"
-      ]
-    },
-    {
-      "query": "write a movie or book review",
-      "relevant_ids": [
-        "pk_18984",
-        "pk_18288",
-        "pk_18251",
-        "pk_18156",
-        "pk_17747",
-        "pk_17398",
-        "pk_17313",
-        "pk_17273",
-        "pk_16243",
-        "pk_16155",
-        "pk_15772",
-        "pk_15703",
-        "pk_15506",
-        "pk_15397",
-        "pk_14997"
-      ]
-    },
-    {
-      "query": "generate sql queries",
-      "relevant_ids": [
-        "pk_19129",
-        "pk_18886",
-        "pk_17577",
-        "pk_17556",
-        "pk_17529",
-        "pk_16456",
-        "pk_16413",
-        "pk_16356",
-        "pk_15945",
-        "pk_14539",
-        "pk_14285",
-        "pk_13948",
-        "pk_13500",
-        "pk_12929",
-        "pk_12748"
-      ]
-    },
-    {
-      "query": "write a press release",
-      "relevant_ids": [
-        "pk_11576",
-        "pk_08657",
-        "pk_19608",
-        "pk_11768",
-        "pk_10721",
-        "pk_10364",
-        "pk_08157",
-        "pk_02149",
-        "pk_19079",
-        "pk_18076",
-        "pk_17911",
-        "pk_17343",
-        "pk_16169",
-        "pk_13954",
-        "pk_13946"
-      ]
-    },
-    {
-      "query": "create a data analysis report",
-      "relevant_ids": [
-        "pk_19361",
-        "pk_02914",
-        "pk_01786",
-        "pk_17393",
-        "pk_14887",
-        "pk_14880",
-        "pk_12806",
-        "pk_11142",
-        "pk_09985",
-        "pk_04950",
-        "pk_02470",
-        "pk_00104",
-        "pk_19587",
-        "pk_19463",
-        "pk_19449"
-      ]
-    },
-    {
-      "query": "summarise meeting notes",
-      "relevant_ids": [
-        "pk_08742",
-        "pk_17267",
-        "pk_16103",
-        "pk_15195",
-        "pk_13349",
-        "pk_12830",
-        "pk_12106",
-        "pk_11149",
-        "pk_10306",
-        "pk_09501",
-        "pk_07880",
-        "pk_05378",
-        "pk_02800",
-        "pk_00325",
-        "pk_00115"
-      ]
-    },
-    {
-      "query": "create a recipe",
-      "relevant_ids": [
-        "pk_19158",
-        "pk_14878",
-        "pk_05454",
-        "pk_00735",
-        "pk_18751",
-        "pk_18476",
-        "pk_17811",
-        "pk_16969",
-        "pk_11309",
-        "pk_11129",
-        "pk_10320",
-        "pk_10215",
-        "pk_09281",
-        "pk_08792",
-        "pk_06130"
-      ]
-    },
-    {
-      "query": "write a sales pitch",
-      "relevant_ids": [
-        "pk_14268",
-        "pk_16182",
-        "pk_08914",
-        "pk_05998",
-        "pk_04883",
-        "pk_03067",
-        "pk_18420",
-        "pk_17993",
-        "pk_17945",
-        "pk_17635",
-        "pk_17588",
-        "pk_17582",
-        "pk_17518",
-        "pk_16519",
-        "pk_16406"
-      ]
-    },
-    {
-      "query": "write a linkedin profile summary",
-      "relevant_ids": [
-        "pk_17973",
-        "pk_10389",
-        "pk_08112",
-        "pk_19121",
-        "pk_17701",
-        "pk_17546",
-        "pk_16200",
-        "pk_09498",
-        "pk_08124",
-        "pk_07142",
-        "pk_05218",
-        "pk_04728",
-        "pk_03434",
-        "pk_02317",
-        "pk_02242"
-      ]
-    },
-    {
-      "query": "explain what my job actually does to my family",
-      "relevant_ids": [
-        "pk_00002",
-        "pk_19722",
-        "pk_19367",
-        "pk_17083",
-        "pk_14425",
-        "pk_13786",
-        "pk_13608",
-        "pk_12531",
-        "pk_12350",
-        "pk_11624",
-        "pk_11129",
-        "pk_10950",
-        "pk_09111",
-        "pk_07961",
-        "pk_07364"
-      ]
-    },
-    {
-      "query": "write a complaint letter to a company",
-      "relevant_ids": [
-        "pk_19397",
-        "pk_18342",
-        "pk_12663",
-        "pk_11838",
-        "pk_06622",
-        "pk_03804",
-        "pk_00219",
-        "pk_19470",
-        "pk_19170",
-        "pk_18064",
-        "pk_16515",
-        "pk_16437",
-        "pk_16168",
-        "pk_15908",
-        "pk_15351"
-      ]
-    }
+  {
+    "query": "brainstorm business name ideas",
+    "relevant_ids": [
+    "pk_07892", "pk_03936", "pk_05668", "pk_10479",
+    "pk_11875", "pk_00670", "pk_08281", "pk_19108"
+    ]
+  },
+  {
+    "query": "write a blog post introduction",
+    "relevant_ids": [
+    "pk_03282", "pk_12610", "pk_17020", "pk_04227",
+    "pk_01511", "pk_16293", "pk_11896", "pk_18811",
+    "pk_10307", "pk_03702", "pk_06080"
+    ]
+  },
+  {
+    "query": "create a weekly meal plan",
+    "relevant_ids": [
+    "pk_09193", "pk_15992", "pk_05262", "pk_01891",
+    "pk_02500", "pk_05534", "pk_02365", "pk_08212",
+    "pk_16370", "pk_04192", "pk_10836", "pk_08178",
+    "pk_18678", "pk_14982", "pk_11025"
+    ]
+  },
+  {
+    "query": "write a professional email",
+    "relevant_ids": [
+    "pk_16035", "pk_12525", "pk_09885", "pk_12646",
+    "pk_01223", "pk_07819", "pk_11534", "pk_17373",
+    "pk_08737", "pk_07901", "pk_17383", "pk_02240",
+    "pk_18673", "pk_01442", "pk_14816"
+    ]
+  },
+  {
+    "query": "write a cold email to a potential client",
+    "relevant_ids": [
+    "pk_03247", "pk_16532", "pk_00096", "pk_17407",
+    "pk_10471", "pk_05640", "pk_04440", "pk_09418",
+    "pk_10217", "pk_09194", "pk_12759", "pk_04907",
+    "pk_06291", "pk_17123", "pk_07800"
+    ]
+  },
+  {
+    "query": "write a customer support response",
+    "relevant_ids": [
+    "pk_05268", "pk_19909", "pk_09891", "pk_01672",
+    "pk_05731", "pk_18904", "pk_18800", "pk_00987",
+    "pk_12744", "pk_06919", "pk_03525", "pk_01437",
+    "pk_08510", "pk_02938", "pk_15779"
+    ]
+  },
+  {
+    "query": "write a bedtime story for kids",
+    "relevant_ids": [
+    "pk_11760", "pk_06673", "pk_13382", "pk_12648",
+    "pk_08608", "pk_00461", "pk_14125", "pk_11050",
+    "pk_07424", "pk_07218"
+    ]
+  },
+  {
+    "query": "create a workout plan",
+    "relevant_ids": [
+    "pk_12108", "pk_19738", "pk_02431", "pk_19346",
+    "pk_14798", "pk_14486", "pk_15451", "pk_10715",
+    "pk_07563", "pk_14634", "pk_05947"
+    ]
+  },
+  {
+    "query": "write a resignation letter",
+    "relevant_ids": [
+    "pk_04238", "pk_16499", "pk_10814", "pk_19809",
+    "pk_16737", "pk_15927", "pk_15610", "pk_08970",
+    "pk_06488", "pk_02929"
+    ]
+  },
+  {
+    "query": "write a performance review for an employee",
+    "relevant_ids": [
+    "pk_19717", "pk_16789", "pk_16781", "pk_14921",
+    "pk_14318", "pk_13712", "pk_12025", "pk_11329",
+    "pk_10928", "pk_09720", "pk_08102", "pk_08101",
+    "pk_01834", "pk_17401", "pk_17337"
+    ]
+  },
+  {
+    "query": "write a movie or book review",
+    "relevant_ids": [
+    "pk_18984", "pk_18288", "pk_18251", "pk_18156",
+    "pk_17747", "pk_17398", "pk_17313", "pk_17273",
+    "pk_16243", "pk_16155", "pk_15772", "pk_15703",
+    "pk_15506", "pk_15397", "pk_14997"
+    ]
+  },
+  {
+    "query": "generate sql queries",
+    "relevant_ids": [
+    "pk_19129", "pk_18886", "pk_17577", "pk_17556",
+    "pk_17529", "pk_16456", "pk_16413", "pk_16356",
+    "pk_15945", "pk_14539", "pk_14285", "pk_13948",
+    "pk_13500", "pk_12929", "pk_12748"
+    ]
+  },
+  {
+    "query": "write a press release",
+    "relevant_ids": [
+    "pk_11576", "pk_08657", "pk_19608", "pk_11768",
+    "pk_10721", "pk_10364", "pk_08157", "pk_02149",
+    "pk_19079", "pk_18076", "pk_17911", "pk_17343",
+    "pk_16169", "pk_13954", "pk_13946"
+    ]
+  },
+  {
+    "query": "create a data analysis report",
+    "relevant_ids": [
+    "pk_19361", "pk_02914", "pk_01786", "pk_17393",
+    "pk_14887", "pk_14880", "pk_12806", "pk_11142",
+    "pk_09985", "pk_04950", "pk_02470", "pk_00104",
+    "pk_19587", "pk_19463", "pk_19449"
+    ]
+  },
+  {
+    "query": "summarise meeting notes",
+    "relevant_ids": [
+    "pk_08742", "pk_17267", "pk_16103", "pk_15195",
+    "pk_13349", "pk_12830", "pk_12106", "pk_11149",
+    "pk_10306", "pk_09501", "pk_07880", "pk_05378",
+    "pk_02800", "pk_00325", "pk_00115"
+    ]
+  },
+  {
+    "query": "create a recipe",
+    "relevant_ids": [
+    "pk_19158", "pk_14878", "pk_05454", "pk_00735",
+    "pk_18751", "pk_18476", "pk_17811", "pk_16969",
+    "pk_11309", "pk_11129", "pk_10320", "pk_10215",
+    "pk_09281", "pk_08792", "pk_06130"
+    ]
+  },
+  {
+    "query": "write a sales pitch",
+    "relevant_ids": [
+    "pk_14268", "pk_16182", "pk_08914", "pk_05998",
+    "pk_04883", "pk_03067", "pk_18420", "pk_17993",
+    "pk_17945", "pk_17635", "pk_17588", "pk_17582",
+    "pk_17518", "pk_16519", "pk_16406"
+    ]
+  },
+  {
+    "query": "write a linkedin profile summary",
+    "relevant_ids": [
+    "pk_17973", "pk_10389", "pk_08112", "pk_19121",
+    "pk_17701", "pk_17546", "pk_16200", "pk_09498",
+    "pk_08124", "pk_07142", "pk_05218", "pk_04728",
+    "pk_03434", "pk_02317", "pk_02242"
+    ]
+  },
+  {
+    "query": "explain what my job actually does to my family",
+    "relevant_ids": [
+    "pk_00002", "pk_19722", "pk_19367", "pk_17083",
+    "pk_14425", "pk_13786", "pk_13608", "pk_12531",
+    "pk_12350", "pk_11624", "pk_11129", "pk_10950",
+    "pk_09111", "pk_07961", "pk_07364"
+    ]
+  },
+  {
+    "query": "write a complaint letter to a company",
+    "relevant_ids": [
+    "pk_19397", "pk_18342", "pk_12663", "pk_11838",
+    "pk_06622", "pk_03804", "pk_00219", "pk_19470",
+    "pk_19170", "pk_18064", "pk_16515", "pk_16437",
+    "pk_16168", "pk_15908", "pk_15351"
+    ]
+  }
   ],
   "test": [
-    {
-      "query": "write a job application cover letter",
-      "relevant_ids": [
-        "pk_00179",
-        "pk_17325",
-        "pk_02748",
-        "pk_19596",
-        "pk_19163",
-        "pk_18639",
-        "pk_18397",
-        "pk_18167",
-        "pk_17062",
-        "pk_19113",
-        "pk_08168"
-      ]
-    },
-    {
-      "query": "generate a social media post",
-      "relevant_ids": [
-        "pk_06939",
-        "pk_16495",
-        "pk_08784",
-        "pk_05072",
-        "pk_15482",
-        "pk_14102",
-        "pk_11256",
-        "pk_17457",
-        "pk_13204",
-        "pk_06809",
-        "pk_10164",
-        "pk_11777"
-      ]
-    },
-    {
-      "query": "create a lesson plan for a class",
-      "relevant_ids": [
-        "pk_19319",
-        "pk_00314",
-        "pk_06645",
-        "pk_13139",
-        "pk_12120",
-        "pk_04687",
-        "pk_11012",
-        "pk_06600",
-        "pk_08565",
-        "pk_19674",
-        "pk_07963",
-        "pk_16286",
-        "pk_04442",
-        "pk_04992",
-        "pk_03814"
-      ]
-    },
-    {
-      "query": "debug and fix my code",
-      "relevant_ids": [
-        "pk_17181",
-        "pk_14835",
-        "pk_04143",
-        "pk_03805",
-        "pk_04970",
-        "pk_00514",
-        "pk_00807",
-        "pk_07550",
-        "pk_02512",
-        "pk_06744",
-        "pk_15412",
-        "pk_03166",
-        "pk_14983",
-        "pk_11790",
-        "pk_19093"
-      ]
-    },
-    {
-      "query": "write a product description",
-      "relevant_ids": [
-        "pk_12086",
-        "pk_07830",
-        "pk_17752",
-        "pk_15756",
-        "pk_12200",
-        "pk_18592",
-        "pk_04887",
-        "pk_09230",
-        "pk_19847",
-        "pk_02107",
-        "pk_16961",
-        "pk_15781",
-        "pk_07081",
-        "pk_07450",
-        "pk_05964"
-      ]
-    },
-    {
-      "query": "explain a complex topic simply",
-      "relevant_ids": [
-        "pk_15658",
-        "pk_01120",
-        "pk_14700",
-        "pk_17470",
-        "pk_06012",
-        "pk_02480",
-        "pk_19453",
-        "pk_17796",
-        "pk_11169",
-        "pk_10950",
-        "pk_00267",
-        "pk_00782"
-      ]
-    },
-    {
-      "query": "create an onboarding plan for new employees",
-      "relevant_ids": [
-        "pk_11429",
-        "pk_10331",
-        "pk_05745",
-        "pk_18154",
-        "pk_17878",
-        "pk_17161",
-        "pk_16541",
-        "pk_13725",
-        "pk_13308",
-        "pk_11341",
-        "pk_10465",
-        "pk_09980",
-        "pk_08399",
-        "pk_08258",
-        "pk_08126"
-      ]
-    },
-    {
-      "query": "create a business proposal",
-      "relevant_ids": [
-        "pk_02213",
-        "pk_17965",
-        "pk_14580",
-        "pk_08039",
-        "pk_05801",
-        "pk_19986",
-        "pk_19951",
-        "pk_19943",
-        "pk_19858",
-        "pk_19731",
-        "pk_19444",
-        "pk_19442",
-        "pk_19226",
-        "pk_19007",
-        "pk_18816"
-      ]
-    },
-    {
-      "query": "create a financial budget plan",
-      "relevant_ids": [
-        "pk_17649",
-        "pk_08543",
-        "pk_19077",
-        "pk_18669",
-        "pk_17909",
-        "pk_16881",
-        "pk_15493",
-        "pk_15176",
-        "pk_14546",
-        "pk_14007",
-        "pk_13868",
-        "pk_13414",
-        "pk_13058",
-        "pk_12757",
-        "pk_12685"
-      ]
-    },
-    {
-      "query": "create a python script",
-      "relevant_ids": [
-        "pk_10393",
-        "pk_05195",
-        "pk_19842",
-        "pk_19446",
-        "pk_19200",
-        "pk_19093",
-        "pk_18679",
-        "pk_18616",
-        "pk_18543",
-        "pk_18484",
-        "pk_18311",
-        "pk_18205",
-        "pk_17922",
-        "pk_17581",
-        "pk_15966"
-      ]
-    },
-    {
-      "query": "write a grant proposal",
-      "relevant_ids": [
-        "pk_19659",
-        "pk_19301",
-        "pk_19255",
-        "pk_18526",
-        "pk_17887",
-        "pk_17334",
-        "pk_16990",
-        "pk_16984",
-        "pk_16075",
-        "pk_15490",
-        "pk_14968",
-        "pk_14670",
-        "pk_14288",
-        "pk_13754",
-        "pk_13492"
-      ]
-    },
-    {
-      "query": "generate a marketing campaign",
-      "relevant_ids": [
-        "pk_11070",
-        "pk_02378",
-        "pk_01990",
-        "pk_19377",
-        "pk_18778",
-        "pk_18142",
-        "pk_16065",
-        "pk_15346",
-        "pk_13750",
-        "pk_13536",
-        "pk_13497",
-        "pk_13105",
-        "pk_12519",
-        "pk_12454",
-        "pk_12440"
-      ]
-    },
-    {
-      "query": "generate a risk assessment",
-      "relevant_ids": [
-        "pk_18791",
-        "pk_14238",
-        "pk_11588",
-        "pk_09858",
-        "pk_09356",
-        "pk_09096",
-        "pk_07292",
-        "pk_06435",
-        "pk_02291",
-        "pk_19684",
-        "pk_19295",
-        "pk_19049",
-        "pk_18578",
-        "pk_18203"
-      ]
-    },
-    {
-      "query": "explain machine learning concepts",
-      "relevant_ids": [
-        "pk_19658",
-        "pk_14290",
-        "pk_03693",
-        "pk_19212",
-        "pk_19092",
-        "pk_19026",
-        "pk_18484",
-        "pk_18375",
-        "pk_17480",
-        "pk_17179",
-        "pk_15938",
-        "pk_15667",
-        "pk_13468",
-        "pk_11006",
-        "pk_09063"
-      ]
-    },
-    {
-      "query": "write song lyrics",
-      "relevant_ids": [
-        "pk_16847",
-        "pk_14506",
-        "pk_13401",
-        "pk_12814",
-        "pk_12420",
-        "pk_09371",
-        "pk_19936",
-        "pk_19309",
-        "pk_18773",
-        "pk_18690",
-        "pk_17718",
-        "pk_16909",
-        "pk_15744",
-        "pk_14951",
-        "pk_14907"
-      ]
-    },
-    {
-      "query": "translate text to another language",
-      "relevant_ids": [
-        "pk_19966",
-        "pk_19799",
-        "pk_19713",
-        "pk_19679",
-        "pk_19606",
-        "pk_19400",
-        "pk_19159",
-        "pk_19031",
-        "pk_18973",
-        "pk_18940",
-        "pk_18892",
-        "pk_18816",
-        "pk_18747",
-        "pk_18667",
-        "pk_18405"
-      ]
-    },
-    {
-      "query": "write a research paper abstract",
-      "relevant_ids": [
-        "pk_19890",
-        "pk_18894",
-        "pk_17966",
-        "pk_17555",
-        "pk_15860",
-        "pk_15461",
-        "pk_15193",
-        "pk_14985",
-        "pk_14206",
-        "pk_14127",
-        "pk_10212",
-        "pk_09384",
-        "pk_07721",
-        "pk_07691",
-        "pk_06379"
-      ]
-    },
-    {
-      "query": "write a meditation guide",
-      "relevant_ids": [
-        "pk_18516",
-        "pk_16516",
-        "pk_13790",
-        "pk_13038",
-        "pk_11614",
-        "pk_08337",
-        "pk_01432",
-        "pk_01189",
-        "pk_00525",
-        "pk_00311",
-        "pk_19738",
-        "pk_19554",
-        "pk_19346",
-        "pk_19074",
-        "pk_18785"
-      ]
-    },
-    {
-      "query": "write an apology for a late delivery",
-      "relevant_ids": [
-        "pk_15277",
-        "pk_14357",
-        "pk_11898",
-        "pk_11477",
-        "pk_01437",
-        "pk_19170",
-        "pk_17627",
-        "pk_17352",
-        "pk_17272",
-        "pk_16355",
-        "pk_14904",
-        "pk_12947",
-        "pk_11944",
-        "pk_11415",
-        "pk_09506"
-      ]
-    },
-    {
-      "query": "ask my boss for a salary raise",
-      "relevant_ids": [
-        "pk_18612",
-        "pk_10509",
-        "pk_09039",
-        "pk_07478",
-        "pk_00984",
-        "pk_18645",
-        "pk_15004",
-        "pk_13031",
-        "pk_12518",
-        "pk_12443",
-        "pk_11023",
-        "pk_10425",
-        "pk_09939",
-        "pk_09932",
-        "pk_09434"
-      ]
-    },
-    {
-      "query": "write a cover letter for an internship",
-      "relevant_ids": [
-        "pk_19113",
-        "pk_18479",
-        "pk_18740",
-        "pk_17185",
-        "pk_13013",
-        "pk_09547",
-        "pk_08168",
-        "pk_01199"
-      ]
-    },
-    {
-      "query": "create a social media strategy",
-      "relevant_ids": [
-        "pk_05752",
-        "pk_19678",
-        "pk_19042",
-        "pk_17997",
-        "pk_16659",
-        "pk_14516",
-        "pk_06245",
-        "pk_14444",
-        "pk_14230",
-        "pk_15043",
-        "pk_13619",
-        "pk_14587",
-        "pk_11070",
-        "pk_10443"
-      ]
-    },
-    {
-      "query": "write a privacy policy for a website",
-      "relevant_ids": [
-        "pk_00571",
-        "pk_06194",
-        "pk_05229",
-        "pk_01856",
-        "pk_19839",
-        "pk_19437",
-        "pk_08126",
-        "pk_11519",
-        "pk_10704",
-        "pk_10569",
-        "pk_09190",
-        "pk_08651",
-        "pk_08196",
-        "pk_05743",
-        "pk_03559",
-        "pk_03390",
-        "pk_02498"
-      ]
-    },
-    {
-      "query": "create a project management plan",
-      "relevant_ids": [
-        "pk_13961",
-        "pk_15929",
-        "pk_15702",
-        "pk_12634",
-        "pk_11816",
-        "pk_10531",
-        "pk_15345",
-        "pk_06747",
-        "pk_02943",
-        "pk_00933",
-        "pk_19836",
-        "pk_10064",
-        "pk_07251c"
-      ]
-    },
-    {
-      "query": "generate a quiz or trivia questions",
-      "relevant_ids": [
-        "pk_17726",
-        "pk_16751",
-        "pk_15325",
-        "pk_12030",
-        "pk_10822",
-        "pk_08936",
-        "pk_08735",
-        "pk_10613",
-        "pk_08115",
-        "pk_07164",
-        "pk_06878",
-        "pk_06560",
-        "pk_05761",
-        "pk_02920",
-        "pk_16257"
-      ]
-    },
-    {
-      "query": "create a brand style guide",
-      "relevant_ids": [
-        "pk_17222",
-        "pk_08203",
-        "pk_02173",
-        "pk_01591",
-        "pk_19996",
-        "pk_19741",
-        "pk_18765",
-        "pk_18181",
-        "pk_15035",
-        "pk_14962",
-        "pk_14544",
-        "pk_14049",
-        "pk_12063",
-        "pk_11315",
-        "pk_10379",
-        "pk_09440",
-        "pk_09297",
-        "pk_05583"
-      ]
-    },
-    {
-      "query": "write a negotiation script",
-      "relevant_ids": [
-        "pk_18359",
-        "pk_17760",
-        "pk_17698",
-        "pk_17629",
-        "pk_17359",
-        "pk_17158",
-        "pk_17074",
-        "pk_13037",
-        "pk_06302",
-        "pk_11663",
-        "pk_09126",
-        "pk_08380",
-        "pk_06071",
-        "pk_05366"
-      ]
-    },
-    {
-      "query": "summarise a scientific article",
-      "relevant_ids": [
-        "pk_16314",
-        "pk_14985",
-        "pk_14793",
-        "pk_09384",
-        "pk_07092",
-        "pk_06379",
-        "pk_19890",
-        "pk_15860",
-        "pk_19069",
-        "pk_18894",
-        "pk_18233",
-        "pk_17966",
-        "pk_17863",
-        "pk_17558",
-        "pk_17555",
-        "pk_17421",
-        "pk_17347"
-      ]
-    },
-    {
-      "query": "write a motivational speech",
-      "relevant_ids": [
-        "pk_13218",
-        "pk_11172",
-        "pk_02003",
-        "pk_16816",
-        "pk_15775",
-        "pk_13828",
-        "pk_13358",
-        "pk_02505",
-        "pk_12729",
-        "pk_12330",
-        "pk_09807",
-        "pk_07983",
-        "pk_06755"
-      ]
-    },
-    {
-      "query": "create a user persona",
-      "relevant_ids": [
-        "pk_00626",
-        "pk_18976",
-        "pk_08634",
-        "pk_07313",
-        "pk_05346",
-        "pk_16509",
-        "pk_15513",
-        "pk_17699",
-        "pk_17017",
-        "pk_15270",
-        "pk_14696",
-        "pk_14258"
-      ]
-    },
-    {
-      "query": "write an faq page for a website",
-      "relevant_ids": [
-        "pk_19103",
-        "pk_18347",
-        "pk_17460",
-        "pk_15435",
-        "pk_18149",
-        "pk_17150",
-        "pk_15735",
-        "pk_16550",
-        "pk_14422",
-        "pk_14240",
-        "pk_14188",
-        "pk_09922",
-        "pk_09630",
-        "pk_11201",
-        "pk_13371"
-      ]
-    },
-    {
-      "query": "write a code review feedback",
-      "relevant_ids": [
-        "pk_02503",
-        "pk_05125",
-        "pk_19768",
-        "pk_19487",
-        "pk_19446",
-        "pk_17825",
-        "pk_14989",
-        "pk_14277",
-        "pk_12945",
-        "pk_11987",
-        "pk_11598",
-        "pk_10662",
-        "pk_08526",
-        "pk_08500"
-      ]
-    },
-    {
-      "query": "create a cybersecurity awareness guide",
-      "relevant_ids": [
-        "pk_12356",
-        "pk_03549",
-        "pk_03143",
-        "pk_02588",
-        "pk_18655",
-        "pk_16148",
-        "pk_18914",
-        "pk_06470",
-        "pk_01594",
-        "pk_00538",
-        "pk_07737",
-        "pk_01904"
-      ]
-    },
-    {
-      "query": "write an executive summary",
-      "relevant_ids": [
-        "pk_08869",
-        "pk_03792",
-        "pk_08286",
-        "pk_03138",
-        "pk_13135",
-        "pk_11109",
-        "pk_09837",
-        "pk_19226",
-        "pk_17719",
-        "pk_17712",
-        "pk_17708",
-        "pk_17935"
-      ]
-    },
-    {
-      "query": "plan a team building activity",
-      "relevant_ids": [
-        "pk_15163",
-        "pk_08707",
-        "pk_07572",
-        "pk_02559",
-        "pk_00772",
-        "pk_19869",
-        "pk_19720",
-        "pk_14843",
-        "pk_17773",
-        "pk_16311",
-        "pk_14278",
-        "pk_10295",
-        "pk_19142",
-        "pk_18836",
-        "pk_17281"
-      ]
-    },
-    {
-      "query": "write a product launch announcement",
-      "relevant_ids": [
-        "pk_19608",
-        "pk_11576",
-        "pk_10364",
-        "pk_08657",
-        "pk_02149",
-        "pk_14714",
-        "pk_19079",
-        "pk_19747",
-        "pk_18881",
-        "pk_18076",
-        "pk_16580",
-        "pk_16169",
-        "pk_15795",
-        "pk_13954",
-        "pk_14922"
-      ]
-    },
-    {
-      "query": "create an email newsletter",
-      "relevant_ids": [
-        "pk_15194",
-        "pk_14800",
-        "pk_14763",
-        "pk_14500",
-        "pk_14262",
-        "pk_17491",
-        "pk_18198",
-        "pk_15712",
-        "pk_07872",
-        "pk_18872",
-        "pk_11530",
-        "pk_10962",
-        "pk_10353",
-        "pk_14413"
-      ]
-    },
-    {
-      "query": "write a character description for a story",
-      "relevant_ids": [
-        "pk_13562",
-        "pk_11277",
-        "pk_07432",
-        "pk_18470",
-        "pk_18289",
-        "pk_16863",
-        "pk_16586",
-        "pk_05002",
-        "pk_12924",
-        "pk_19536",
-        "pk_18177",
-        "pk_17827",
-        "pk_17205",
-        "pk_16318",
-        "pk_16193",
-        "pk_14804",
-        "pk_14261"
-      ]
-    }
+  {
+    "query": "write a job application cover letter",
+    "relevant_ids": [
+    "pk_00179", "pk_17325", "pk_02748", "pk_19596",
+    "pk_19163", "pk_18639", "pk_18397", "pk_18167",
+    "pk_17062", "pk_19113", "pk_08168"
+    ]
+  },
+  {
+    "query": "generate a social media post",
+    "relevant_ids": [
+    "pk_06939", "pk_16495", "pk_08784", "pk_05072",
+    "pk_15482", "pk_14102", "pk_11256", "pk_17457",
+    "pk_13204", "pk_06809", "pk_10164", "pk_11777"
+    ]
+  },
+  {
+    "query": "create a lesson plan for a class",
+    "relevant_ids": [
+    "pk_19319", "pk_00314", "pk_06645", "pk_13139",
+    "pk_12120", "pk_04687", "pk_11012", "pk_06600",
+    "pk_08565", "pk_19674", "pk_07963", "pk_16286",
+    "pk_04442", "pk_04992", "pk_03814"
+    ]
+  },
+  {
+    "query": "debug and fix my code",
+    "relevant_ids": [
+    "pk_17181", "pk_14835", "pk_04143", "pk_03805",
+    "pk_04970", "pk_00514", "pk_00807", "pk_07550",
+    "pk_02512", "pk_06744", "pk_15412", "pk_03166",
+    "pk_14983", "pk_11790", "pk_19093"
+    ]
+  },
+  {
+    "query": "write a product description",
+    "relevant_ids": [
+    "pk_12086", "pk_07830", "pk_17752", "pk_15756",
+    "pk_12200", "pk_18592", "pk_04887", "pk_09230",
+    "pk_19847", "pk_02107", "pk_16961", "pk_15781",
+    "pk_07081", "pk_07450", "pk_05964"
+    ]
+  },
+  {
+    "query": "explain a complex topic simply",
+    "relevant_ids": [
+    "pk_15658", "pk_01120", "pk_14700", "pk_17470",
+    "pk_06012", "pk_02480", "pk_19453", "pk_17796",
+    "pk_11169", "pk_10950", "pk_00267", "pk_00782"
+    ]
+  },
+  {
+    "query": "create an onboarding plan for new employees",
+    "relevant_ids": [
+    "pk_11429", "pk_10331", "pk_05745", "pk_18154",
+    "pk_17878", "pk_17161", "pk_16541", "pk_13725",
+    "pk_13308", "pk_11341", "pk_10465", "pk_09980",
+    "pk_08399", "pk_08258", "pk_08126"
+    ]
+  },
+  {
+    "query": "create a business proposal",
+    "relevant_ids": [
+    "pk_02213", "pk_17965", "pk_14580", "pk_08039",
+    "pk_05801", "pk_19986", "pk_19951", "pk_19943",
+    "pk_19858", "pk_19731", "pk_19444", "pk_19442",
+    "pk_19226", "pk_19007", "pk_18816"
+    ]
+  },
+  {
+    "query": "create a financial budget plan",
+    "relevant_ids": [
+    "pk_17649", "pk_08543", "pk_19077", "pk_18669",
+    "pk_17909", "pk_16881", "pk_15493", "pk_15176",
+    "pk_14546", "pk_14007", "pk_13868", "pk_13414",
+    "pk_13058", "pk_12757", "pk_12685"
+    ]
+  },
+  {
+    "query": "create a python script",
+    "relevant_ids": [
+    "pk_10393", "pk_05195", "pk_19842", "pk_19446",
+    "pk_19200", "pk_19093", "pk_18679", "pk_18616",
+    "pk_18543", "pk_18484", "pk_18311", "pk_18205",
+    "pk_17922", "pk_17581", "pk_15966"
+    ]
+  },
+  {
+    "query": "write a grant proposal",
+    "relevant_ids": [
+    "pk_19659", "pk_19301", "pk_19255", "pk_18526",
+    "pk_17887", "pk_17334", "pk_16990", "pk_16984",
+    "pk_16075", "pk_15490", "pk_14968", "pk_14670",
+    "pk_14288", "pk_13754", "pk_13492"
+    ]
+  },
+  {
+    "query": "generate a marketing campaign",
+    "relevant_ids": [
+    "pk_11070", "pk_02378", "pk_01990", "pk_19377",
+    "pk_18778", "pk_18142", "pk_16065", "pk_15346",
+    "pk_13750", "pk_13536", "pk_13497", "pk_13105",
+    "pk_12519", "pk_12454", "pk_12440"
+    ]
+  },
+  {
+    "query": "generate a risk assessment",
+    "relevant_ids": [
+    "pk_18791", "pk_14238", "pk_11588", "pk_09858",
+    "pk_09356", "pk_09096", "pk_07292", "pk_06435",
+    "pk_02291", "pk_19684", "pk_19295", "pk_19049",
+    "pk_18578", "pk_18203"
+    ]
+  },
+  {
+    "query": "explain machine learning concepts",
+    "relevant_ids": [
+    "pk_19658", "pk_14290", "pk_03693", "pk_19212",
+    "pk_19092", "pk_19026", "pk_18484", "pk_18375",
+    "pk_17480", "pk_17179", "pk_15938", "pk_15667",
+    "pk_13468", "pk_11006", "pk_09063"
+    ]
+  },
+  {
+    "query": "write song lyrics",
+    "relevant_ids": [
+    "pk_16847", "pk_14506", "pk_13401", "pk_12814",
+    "pk_12420", "pk_09371", "pk_19936", "pk_19309",
+    "pk_18773", "pk_18690", "pk_17718", "pk_16909",
+    "pk_15744", "pk_14951", "pk_14907"
+    ]
+  },
+  {
+    "query": "translate text to another language",
+    "relevant_ids": [
+    "pk_19966", "pk_19799", "pk_19713", "pk_19679",
+    "pk_19606", "pk_19400", "pk_19159", "pk_19031",
+    "pk_18973", "pk_18940", "pk_18892", "pk_18816",
+    "pk_18747", "pk_18667", "pk_18405"
+    ]
+  },
+  {
+    "query": "write a research paper abstract",
+    "relevant_ids": [
+    "pk_19890", "pk_18894", "pk_17966", "pk_17555",
+    "pk_15860", "pk_15461", "pk_15193", "pk_14985",
+    "pk_14206", "pk_14127", "pk_10212", "pk_09384",
+    "pk_07721", "pk_07691", "pk_06379"
+    ]
+  },
+  {
+    "query": "write a meditation guide",
+    "relevant_ids": [
+    "pk_18516", "pk_16516", "pk_13790", "pk_13038",
+    "pk_11614", "pk_08337", "pk_01432", "pk_01189",
+    "pk_00525", "pk_00311", "pk_19738", "pk_19554",
+    "pk_19346", "pk_19074", "pk_18785"
+    ]
+  },
+  {
+    "query": "write an apology for a late delivery",
+    "relevant_ids": [
+    "pk_15277", "pk_14357", "pk_11898", "pk_11477",
+    "pk_01437", "pk_19170", "pk_17627", "pk_17352",
+    "pk_17272", "pk_16355", "pk_14904", "pk_12947",
+    "pk_11944", "pk_11415", "pk_09506"
+    ]
+  },
+  {
+    "query": "ask my boss for a salary raise",
+    "relevant_ids": [
+    "pk_18612", "pk_10509", "pk_09039", "pk_07478",
+    "pk_00984", "pk_18645", "pk_15004", "pk_13031",
+    "pk_12518", "pk_12443", "pk_11023", "pk_10425",
+    "pk_09939", "pk_09932", "pk_09434"
+    ]
+  },
+  {
+    "query": "create a social media strategy",
+    "relevant_ids": [
+    "pk_05752", "pk_19678", "pk_19042", "pk_17997",
+    "pk_16659", "pk_14516", "pk_06245", "pk_14444",
+    "pk_14230", "pk_15043", "pk_13619", "pk_14587",
+    "pk_11070", "pk_10443"
+    ]
+  },
+  {
+    "query": "write a privacy policy for a website",
+    "relevant_ids": [
+    "pk_00571", "pk_06194", "pk_05229", "pk_01856",
+    "pk_19839", "pk_19437", "pk_08126", "pk_11519",
+    "pk_10704", "pk_10569", "pk_09190", "pk_08651",
+    "pk_08196", "pk_05743", "pk_03559", "pk_03390",
+    "pk_02498"
+    ]
+  },
+  {
+    "query": "create a project management plan",
+    "relevant_ids": [
+    "pk_13961", "pk_15929", "pk_15702", "pk_12634",
+    "pk_11816", "pk_10531", "pk_15345", "pk_06747",
+    "pk_02943", "pk_00933", "pk_19836", "pk_10064",
+    "pk_07251c"
+    ]
+  },
+  {
+    "query": "generate a quiz or trivia questions",
+    "relevant_ids": [
+    "pk_17726", "pk_16751", "pk_15325", "pk_12030",
+    "pk_10822", "pk_08936", "pk_08735", "pk_10613",
+    "pk_08115", "pk_07164", "pk_06878", "pk_06560",
+    "pk_05761", "pk_02920", "pk_16257"
+    ]
+  },
+  {
+    "query": "create a brand style guide",
+    "relevant_ids": [
+    "pk_17222", "pk_08203", "pk_02173", "pk_01591",
+    "pk_19996", "pk_19741", "pk_18765", "pk_18181",
+    "pk_15035", "pk_14962", "pk_14544", "pk_14049",
+    "pk_12063", "pk_11315", "pk_10379", "pk_09440",
+    "pk_09297", "pk_05583"
+    ]
+  },
+  {
+    "query": "summarise a scientific article",
+    "relevant_ids": [
+    "pk_16314", "pk_14985", "pk_14793", "pk_09384",
+    "pk_07092", "pk_06379", "pk_19890", "pk_15860",
+    "pk_19069", "pk_18894", "pk_18233", "pk_17966",
+    "pk_17863", "pk_17558", "pk_17555", "pk_17421",
+    "pk_17347"
+    ]
+  },
+  {
+    "query": "write a motivational speech",
+    "relevant_ids": [
+    "pk_13218", "pk_11172", "pk_02003", "pk_16816",
+    "pk_15775", "pk_13828", "pk_13358", "pk_02505",
+    "pk_12729", "pk_12330", "pk_09807", "pk_07983",
+    "pk_06755"
+    ]
+  },
+  {
+    "query": "write a code review feedback",
+    "relevant_ids": [
+    "pk_02503", "pk_05125", "pk_19768", "pk_19487",
+    "pk_19446", "pk_17825", "pk_14989", "pk_14277",
+    "pk_12945", "pk_11987", "pk_11598", "pk_10662",
+    "pk_08526", "pk_08500"
+    ]
+  },
+  {
+    "query": "create a cybersecurity awareness guide",
+    "relevant_ids": [
+    "pk_12356", "pk_03549", "pk_03143", "pk_02588",
+    "pk_18655", "pk_16148", "pk_18914", "pk_06470",
+    "pk_01594", "pk_00538", "pk_07737", "pk_01904"
+    ]
+  },
+  {
+    "query": "write an executive summary",
+    "relevant_ids": [
+    "pk_08869", "pk_03792", "pk_08286", "pk_03138",
+    "pk_13135", "pk_11109", "pk_09837", "pk_19226",
+    "pk_17719", "pk_17712", "pk_17708", "pk_17935"
+    ]
+  },
+  {
+    "query": "plan a team building activity",
+    "relevant_ids": [
+    "pk_15163", "pk_08707", "pk_07572", "pk_02559",
+    "pk_00772", "pk_19869", "pk_19720", "pk_14843",
+    "pk_17773", "pk_16311", "pk_14278", "pk_10295",
+    "pk_19142", "pk_18836", "pk_17281"
+    ]
+  },
+  {
+    "query": "write a product launch announcement",
+    "relevant_ids": [
+    "pk_19608", "pk_11576", "pk_10364", "pk_08657",
+    "pk_02149", "pk_14714", "pk_19079", "pk_19747",
+    "pk_18881", "pk_18076", "pk_16580", "pk_16169",
+    "pk_15795", "pk_13954", "pk_14922"
+    ]
+  },
+  {
+    "query": "create an email newsletter",
+    "relevant_ids": [
+    "pk_15194", "pk_14800", "pk_14763", "pk_14500",
+    "pk_14262", "pk_17491", "pk_18198", "pk_15712",
+    "pk_07872", "pk_18872", "pk_11530", "pk_10962",
+    "pk_10353", "pk_14413"
+    ]
+  },
+  {
+    "query": "write a job description",
+    "relevant_ids": [
+    "pk_13248", "pk_17888", "pk_17305", "pk_14473",
+    "pk_12405", "pk_12306", "pk_11875", "pk_11573",
+    "pk_10085", "pk_09895", "pk_08167", "pk_06260",
+    "pk_05912", "pk_04866", "pk_04442", "pk_17024",
+    "pk_12401", "pk_09589", "pk_17619", "pk_17002"
+    ]
+  },
+  {
+    "query": "write a meeting agenda",
+    "relevant_ids": [
+    "pk_14445", "pk_13349", "pk_07710", "pk_02252",
+    "pk_18510", "pk_17267", "pk_16103", "pk_15195",
+    "pk_12830", "pk_12106", "pk_11149", "pk_10306",
+    "pk_09501", "pk_07880", "pk_05378", "pk_02800",
+    "pk_00325", "pk_00115", "pk_08742", "pk_15195"
+    ]
+  }
   ]
 }

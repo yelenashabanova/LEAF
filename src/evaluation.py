@@ -232,73 +232,6 @@ def save_per_query_chart(eval_queries, results_vector, results_reranker, results
     plt.close()
     print("Saved per-query chart: ", path)
 
-# VISUALIZATION
-def save_rank_scatter(eval_queries, results_vector, results_reranker,
-                      path="images/rank_scatter.png"):
-    """
-    Scatter plot comparing vector search rank and reranker rank
-    """
-    # lists for relevant documents
-    relevant_x = []
-    relevant_y = []
-
-    # lists for irrelevant documents
-    irrelevant_x = []
-    irrelevant_y = []
-
-    for i in range(len(eval_queries)):
-        query_data = eval_queries[i]
-        vector_results = results_vector[i]
-        reranker_results = results_reranker[i]
-
-        # relevant IDs for this query
-        relevant_ids = query_data["relevant_ids"]
-
-        # loop through reranked results
-        for rerank_doc in reranker_results[:50]:
-            doc_id = rerank_doc["id"]
-
-            # find original vector rank
-            vector_rank = None
-
-            for j in range(len(vector_results)):
-                if vector_results[j]["id"] == doc_id:
-                    vector_rank = j + 1
-                    break
-            if vector_rank is None: # skip if not found
-                continue
-            reranker_rank = rerank_doc["reranker_rank"]
-
-            # relevant document
-            if doc_id in relevant_ids:
-                relevant_x.append(vector_rank)
-                relevant_y.append(reranker_rank)
-
-            # irrelevant document
-            else:
-                irrelevant_x.append(vector_rank)
-                irrelevant_y.append(reranker_rank)
-
-    # plot
-    fig, ax = plt.subplots(figsize=(8, 8))
-
-    ax.scatter(irrelevant_x, irrelevant_y, color="#7A9BC2", alpha=0.25, s=18, label="Irrelevant")
-    ax.scatter(relevant_x, relevant_y, color="#2E8B57", alpha=0.95, s=32, label="Relevant")
-    ax.plot([1, 50],[1, 50], linestyle="--", linewidth=1, color="#E05C2A", label="No change (diagonal)")
-
-    ax.set_xlabel("Vector search rank (cosine similarity)")
-    ax.set_ylabel("Reranker rank (cross-encoder)")
-    ax.set_title("Cosine Similarity Rank vs Reranker Rank")
-    ax.legend(fontsize=9)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    plt.tight_layout()
-    plt.savefig(path, dpi=150)
-    plt.close()
-
-    print("Saved rank scatter: ", path)
-
-
 
 
 # MAIN
@@ -349,7 +282,6 @@ def main():
     print("\nGenerating visualisations...")
     save_bar_chart([score_a, score_b, score_c])
     save_per_query_chart(eval_queries, results_vector, results_reranker, results_fused)
-    save_rank_scatter(eval_queries, results_vector, results_reranker)
 
     print("\nEvaluation done.")
 

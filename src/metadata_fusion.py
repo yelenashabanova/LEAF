@@ -4,7 +4,7 @@
 #       popularity signals from dataset metadata to produce
 #       a final ranking score using a weighted linear combination:
 #       final_score = alpha × reranker_score + beta × norm_likes
-#                   + gamma × norm_upvotes + delta × norm_uses
+#                     + gamma × norm_upvotes
 #       Weights are tuned via Bayesian Optimisation (Optuna, TPE).
 #
 # INPUT FILES:
@@ -36,7 +36,7 @@ random.seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 
-# silence optuna's per-trial log messages so output stays readable
+# silence optuna log messages so output is readable
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 
@@ -52,7 +52,7 @@ EVALUATION_SET_PATH = "eval_queries.json"
 DEFAULT_CANDIDATES = 50
 
 # Bayesian Optimisation trials to run when tuning weights
-N_TRIALS = 25
+N_TRIALS = 30
 
 
 
@@ -79,17 +79,16 @@ def load_metadata(path=METADATA_PATH):
 def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_queries):
     """
     Use Bayesian Optimisation (Optuna, TPE sampler) to find the best
-    values of alpha, beta, gamma, delta that maximise search quality.
+    values of alpha, beta, gamma that maximise search quality.
 
     The objective function returns Precision at k=5
 
     """
 
     def objective(trial):
-        alpha = trial.suggest_float("alpha", 0.7, 1.0)
-        beta = trial.suggest_float("beta", 0.0, 0.2)
-        gamma = trial.suggest_float("gamma", 0.0, 0.2)
-        delta = trial.suggest_float("delta", 0.0, 0.2)
+        alpha = trial.suggest_float("alpha", 0.5, 1.0)
+        beta = trial.suggest_float("beta", 0.0, 0.3)
+        gamma = trial.suggest_float("gamma", 0.0, 0.3)
 
         precision_scores = []
 
@@ -99,7 +98,7 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
 
             candidates = retrieve_candidates(collection, encoder, query_text)
             reranked = rerank(reranker_model, query_text, candidates)
-            fused = fuse(reranked, metadata_lookup, alpha, beta, gamma, delta)
+            fused = fuse(reranked, metadata_lookup, alpha, beta, gamma)
 
             top5_ids = [c["id"] for c in fused[:5]]
             relevant_found = sum(1 for pid in top5_ids if pid in relevant_ids)
@@ -128,7 +127,7 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
 
 
 # FUSE
-def fuse(reranked, metadata_lookup, alpha, beta, gamma, delta):
+def fuse(reranked, metadata_lookup, alpha, beta, gamma):
     """
     Combine reranker score with popularity signals into a final score.
     The reranker score alone tells us how relevant a prompt is to the query.
@@ -136,9 +135,7 @@ def fuse(reranked, metadata_lookup, alpha, beta, gamma, delta):
     thousands of uses and high likes, meaning real users found it valuable.
     """
 
-    # the reranker scores are raw logits
-    # the metadata signals are already normalised
-    # to make them comparable we normalise the reranker scores to 0-1 too
+    # the reranker scores are raw logits, normalise to make comparable w metadata
     all_scores = [c["reranker_score"] for c in reranked]
     min_score = min(all_scores)
     max_score = max(all_scores)
@@ -157,14 +154,12 @@ def fuse(reranked, metadata_lookup, alpha, beta, gamma, delta):
         meta = metadata_lookup.get(prompt_id, {})
         norm_likes = meta.get("likes", 0.0)
         norm_upvotes = meta.get("upvotes", 0.0)
-        norm_uses = meta.get("uses", 0.0)
 
         # weighted linear combination formula
         candidate["final_score"] = (
             alpha * norm_reranker +
             beta  * norm_likes   +
-            gamma * norm_upvotes +
-            delta * norm_uses
+            gamma * norm_upvotes
         )
 
     # sort by final score, highest first
@@ -232,7 +227,6 @@ def main():
     print("alpha =", best_weights["alpha"])
     print("beta  =", best_weights["beta"])
     print("gamma =", best_weights["gamma"])
-    print("delta =", best_weights["delta"])
 
     # save best weights to file so evaluation.py can load them
     with open("outputs/best_weights.json", "w") as f:
@@ -272,8 +266,7 @@ def main():
         fused = fuse(reranked, metadata_lookup,
                      alpha=best_weights["alpha"],
                      beta=best_weights["beta"],
-                     gamma=best_weights["gamma"],
-                     delta=best_weights["delta"])
+                     gamma=best_weights["gamma"])
 
         print("\nAFTER metadata fusion (top 5):")
         print_fused_results(fused, top_n=5)

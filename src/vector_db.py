@@ -1,15 +1,15 @@
 # ============================================================
 # FILE: vector_db.py
 # ROLE: Phase 3 — Build a persistent ChromaDB index over the
-#       prompt embeddings produced in Phase 2 and expose a
+#       produced prompt embeddings and expose a
 #       cosine-similarity query function. This is the retrieval
 #       backbone of the LEAF semantic search pipeline.
 #
 # INPUT FILES:
-#   - outputs/cleaned_data.json       from preprocessing.py (Phase 1)
-#   - outputs/embeddings.npy          from embeddings.py    (Phase 2)
-#   - outputs/embeddings_ids.json     from embeddings.py    (Phase 2)
-#   - outputs/embeddings_meta.json    from embeddings.py    (Phase 2)
+#   - outputs/cleaned_data.json       from preprocessing.py
+#   - outputs/embeddings.npy          from embeddings.py
+#   - outputs/embeddings_ids.json     from embeddings.py
+#   - outputs/embeddings_meta.json    from embeddings.py
 #
 # OUTPUT FILES:
 #   - chroma_db/                      persistent ChromaDB store

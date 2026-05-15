@@ -54,7 +54,6 @@ with open(BEST_WEIGHTS_PATH, encoding="utf-8") as f:
 BEST_ALPHA = best_weights["alpha"]
 BEST_BETA  = best_weights["beta"]
 BEST_GAMMA = best_weights["gamma"]
-BEST_DELTA = best_weights["delta"]
 
 # how many candidates to retrieve from ChromaDB
 DEFAULT_CANDIDATES = 50
@@ -139,8 +138,7 @@ def run_all_configurations(collection, encoder, reranker_model, metadata_lookup,
         fused = fuse(reranked, metadata_lookup,
                      alpha=BEST_ALPHA,
                      beta=BEST_BETA,
-                     gamma=BEST_GAMMA,
-                     delta=BEST_DELTA)
+                     gamma=BEST_GAMMA)
         results_fused.append(fused)
 
     return results_vector, results_reranker, results_fused
@@ -318,7 +316,6 @@ def main():
     print("alpha =", BEST_ALPHA)
     print("beta  =", BEST_BETA)
     print("gamma =", BEST_GAMMA)
-    print("delta =", BEST_DELTA)
 
     # load metadata lookup
     metadata_lookup = load_metadata()

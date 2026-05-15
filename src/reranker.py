@@ -31,7 +31,6 @@ torch.manual_seed(SEED)
 
 # recommended model
 RERANKER_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
-#RERANKER_MODEL_NAME = "BAAI/bge-reranker-v2-m3"
 
 # paths to connect to the ChromaDB built by vector_db.py.
 CHROMA_DB_PATH = "./chroma_db"

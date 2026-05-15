@@ -34,10 +34,10 @@ CLEANED_INPUT_PATH = "outputs/cleaned_data.json"
 EMBEDDINGS_OUTPUT_PATH = "outputs/embeddings.npy"
 IDS_OUTPUT_PATH = "outputs/embeddings_ids.json"
 META_OUTPUT_PATH = "outputs/embeddings_meta.json"
-EMBEDDINGS_BGE_OUTPUT_PATH = "outputs/embeddings_bge.npy"
+#EMBEDDINGS_BGE_OUTPUT_PATH = "outputs/embeddings_bge.npy"
 
-PRIMARY_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-SECONDARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
+PRIMARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
+#SECONDARY_MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 
 
@@ -134,10 +134,10 @@ def main():
     embeddings = encode_texts(PRIMARY_MODEL_NAME, texts)
     save_outputs(embeddings, ids, PRIMARY_MODEL_NAME)
 
-    print("\nSecondary model:", SECONDARY_MODEL_NAME)
-    embeddings_bge = encode_texts(SECONDARY_MODEL_NAME, texts)
-    np.save(EMBEDDINGS_BGE_OUTPUT_PATH, embeddings_bge)
-    print("Saved", embeddings_bge.shape, "->", EMBEDDINGS_BGE_OUTPUT_PATH)
+    #print("\nSecondary model:", SECONDARY_MODEL_NAME)
+    #embeddings_bge = encode_texts(SECONDARY_MODEL_NAME, texts)
+    #np.save(EMBEDDINGS_BGE_OUTPUT_PATH, embeddings_bge)
+    #print("Saved", embeddings_bge.shape, "->", EMBEDDINGS_BGE_OUTPUT_PATH)
 
 
 if __name__ == "__main__":

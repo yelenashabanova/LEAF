@@ -52,7 +52,6 @@ def load_and_sample():
 
     print("Total unique categories in dataset:", len(set(all_cats)))
 
-    # sample PER_CAT points from each of the top 15 categories
     counts = Counter(all_cats)
     sample_idx  = []
     sample_cats = []

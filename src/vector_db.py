@@ -79,8 +79,6 @@ def create_collection(client):
 
 # INSERT VECTORS
 def build_metadata(record):
-    # ChromaDB metadata values must be primitive types
-
     meta = {}
     for field in METADATA_FIELDS:
         if field in record and record[field] is not None:
@@ -197,8 +195,7 @@ def main():
     print("\nLoading inputs")
     embeddings, ids, run_meta, records = load_inputs()
 
-    # embeddings.npy and cleaned_data.json may not be in the same row order,
-    # so we look up records by ID when assembling each batch.
+    # embeddings.npy and cleaned_data.json may not be in the same row order
     id_to_record = {}
     for record in records:
         record_id = record["id"]
@@ -208,14 +205,14 @@ def main():
     if os.path.exists(CHROMA_DB_PATH):
         shutil.rmtree(CHROMA_DB_PATH)
 
-    print("\nInitialising ChromaDB at", CHROMA_DB_PATH)
+    print("Initialising ChromaDB at", CHROMA_DB_PATH)
     client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
     collection = create_collection(client)
 
-    print("\nIndexing vectors")
+    print("Indexing vectors")
     insert_in_batches(collection, embeddings, ids, id_to_record)
 
-    print("\nRunning sample queries")
+    print("Running sample queries")
     model = load_query_encoder(run_meta)
     print_sample_queries(collection, model)
 

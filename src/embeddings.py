@@ -6,12 +6,12 @@
 #       by vector_db.py in Phase 3.
 #
 # INPUT FILES:
-#   - outputs/cleaned_data.json         from preprocessing.py
+#   - outputs/cleaned_data.json          from preprocessing.py
 #
 # OUTPUT FILES:
 #   - outputs/embeddings.npy            model vectors (BGE-small-en-v1.5, 384-dim)
 #   - outputs/embeddings_ids.json       prompt IDs aligned with embedding rows
-#   - outputs/embeddings_meta.json      run metadata (model, dim, seed, ...)
+#   - outputs/embeddings_meta.json      run metadata (model, dim, seed, etc.)
 #
 # ============================================================
 
@@ -63,7 +63,6 @@ def prepare_inputs(records):
         print("Skipped", skipped, "records with empty text_to_embed")
     print("Prepared", len(texts), "texts")
 
-    # Char lengths, rough proxy for the 256-token context window.
     lengths = [len(t) for t in texts]
     print("Text length (chars): min", min(lengths),
           "mean", sum(lengths) // len(lengths),

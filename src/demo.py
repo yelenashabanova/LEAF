@@ -25,7 +25,7 @@ def load_pipeline():
 with st.spinner("Loading models…"):
     encoder, collection, reranker_model, metadata_lookup, weights = load_pipeline()
 
-st.title("🔍 PromptKaban Search")
+st.title("🔍 Intelligent Prompt Retrieval")
 st.caption("LEAF srl · LUISS University · AI Techniques 2026 — 18,709 AI prompts")
 
 query = st.text_input("Enter a search query, then press Search", placeholder="e.g. write a cold email to a potential investor")

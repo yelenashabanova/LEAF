@@ -32,7 +32,7 @@ Step 7 -> streamlit run demo.py
 | 4 | `python` [`reranker.py`](reranker.py) | Cross-encoder reranking of top candidates | prints ranked results to stdout |
 | 5 | `python` [`metadata_fusion.py`](metadata_fusion.py) | Blends semantic score with metadata signals; tunes α, β, γ via Bayesian optimisation | [`best_weights.json`](outputs/best_weights.json) |
 | 6 | `python` [`evaluation.py`](evaluation.py) | Runs A/B/C comparison, computes Precision@K and MRR | prints results table |
-| 7 | `streamlit run` [`demo.py`](demo.py) | Launches the web demo in your browser | opens at `http://localhost:8501` |
+| 7 | `streamlit run` [`src/demo.py`](demo.py) | Launches the web demo in your browser | opens at `http://localhost:8501` |
 > **Optional:** `python` [`embeddings_vis.py`](embeddings_vis.py) — generates t-SNE/UMAP visualisations of the embedding space. Run after Step 2.
 
 ---
@@ -40,7 +40,7 @@ Step 7 -> streamlit run demo.py
 ## Dataset
 
 Raw dataset file at:
-[dataset.json](LEAF-promptkaban-dataset/dataset.json)
+[LEAF-promptkaban-dataset/dataset.json](LEAF-promptkaban-dataset/dataset.json)
 
 
 `preprocessing.py` will look for it in the same directory.

@@ -119,7 +119,7 @@ def tune_weights(collection, encoder, reranker_model, metadata_lookup, eval_quer
     )
     study.optimize(objective, n_trials=N_TRIALS)
 
-    print("Best MRR:          ", round(study.best_value, 4))
+    print("Best Precision@5:          ", round(study.best_value, 4))
     print("Best weights found:", study.best_params)
 
     return study.best_params, study

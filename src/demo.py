@@ -34,7 +34,8 @@ k     = st.slider("Results", 1, 20, 5)
 if st.button("Search →", type="primary") and query.strip():
     with st.spinner("Searching…"):
         results = fuse(rerank(reranker_model, query, retrieve_candidates(collection, encoder, query)),
-                       metadata_lookup, **weights)
+                       metadata_lookup,
+                       alpha=weights["alpha"], beta=weights["beta"], gamma=weights["gamma"])
     for i, r in enumerate(results[:k]):
         m = r.get("metadata", {})
         with st.container(border=True):

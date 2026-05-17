@@ -26,7 +26,7 @@ with st.spinner("Loading models…"):
     encoder, collection, reranker_model, metadata_lookup, weights = load_pipeline()
 
 st.title("🔍 Intelligent Prompt Retrieval")
-st.caption("LEAF srl · LUISS University · AI Techniques 2026 — 18,709 AI prompts")
+st.caption("DEMO — LEAF srl · LUISS University · AI Techniques 2026")
 
 query = st.text_input("Enter a search query, then press Search", placeholder="e.g. write a cold email to a potential investor")
 k     = st.slider("Results", 1, 20, 5)
